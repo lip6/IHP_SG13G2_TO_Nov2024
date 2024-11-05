@@ -6,7 +6,9 @@ ReadTheDocs documentation for IHP-Open-DesignLib is [here](https://ihp-open-ip.r
 
 ## Submission process
 
-Make a fork of this repository and then push your data to it, then make a pull request.
+In oreder to make a submission for our OpenMPW run you have to have a valid github account. 
+Make a fork of this repository and then create a separate directory for your design next to the `ExampleDesign` (you can also make a copy and rename it). 
+Structure your data according to our recomendations, update the documentation and push your files to your fork, then make a pull request.
 
 > [!CAUTION]  
 > On each PR a github action will be triggered to run a minimal DRC precheck (rejection test). Please consider it and do not upload many `gds` files.
@@ -17,7 +19,7 @@ An example of a failure is shown on the following figure
 
 ![drc fail](drc/failure.png)
 
-The detailed report can be downloaded from a link, which can be found et the end of the section `Details->Archive DRC Results` as show on th image:
+The detailed report can be downloaded from a link, which can be found at the end of the section `Details->Archive DRC Results` as show on the image:
 
 
 ![drc report](drc/report.png)
@@ -28,7 +30,6 @@ The detailed report can be downloaded from a link, which can be found et the end
 ```
 zip -s 50m -r file.gds.zip output_folder/
 ```
-
 
 
 
