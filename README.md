@@ -6,9 +6,10 @@ ReadTheDocs documentation for IHP-Open-DesignLib is [here](https://ihp-open-ip.r
 
 ## Submission process
 
-In oreder to make a submission for our OpenMPW run you have to have a valid github account. 
+
+To submit for our OpenMPW run you have to have a valid github account. 
 Make a fork of this repository and then create a separate directory for your design next to the `ExampleDesign` (you can also make a copy and rename it). 
-Structure your data according to our recomendations, update the documentation and push your files to your fork, then make a pull request.
+Structure your data according to our recommendations, update the documentation and push your files to your fork, then make a pull request.
 
 > [!CAUTION]  
 > On each PR a github action will be triggered to run a minimal DRC precheck (rejection test). Please consider it and do not upload many `gds` files.
@@ -24,14 +25,19 @@ The detailed report can be downloaded from a link, which can be found at the end
 
 ![drc report](drc/report.png)
 
+
+> [!TIP]  
+> To be sure that the design meets the minimum DRC requirements we strongly recommend to run it using klayout DRC as shown below:
+>![drc klayout](drc/klayout_mindrc.png)
+
+
+
 > [!TIP]  
 > The DRC rejection test supports `gds` and `gds.zip` files. In a case of a large file (> 50 MB) you can split the `zip` file and upload multiple `zip` files. On linux you can perform it using the following command:
 
 ```
 zip -s 50m -r file.gds.zip output_folder/
 ```
-
-
 
 ## Directory structure
 
@@ -95,4 +101,4 @@ Go to `source` directory to modify the `rst` files.
 ### Verification/validation data
 
 Since one of the principal goals of the OpenMPW runs is a creation of a silicon proven designs we expect from the designers to measure and validate the submitted design and then open source measurements results.
-This directory at the moment of the submission is only a placeholder for future measurments data. A report from the measurements can be part of the documentation. 
+This directory at the moment of the submission is only a placeholder for future measurements data. A report from the measurements can be part of the documentation. 
