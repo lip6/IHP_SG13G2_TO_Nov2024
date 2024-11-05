@@ -11,6 +11,10 @@ Make a fork of this repository and then push your data to it, then make a pull r
 > [!CAUTION]  
 > On each PR a github action will be triggered to run a minimal DRC precheck (rejection test). Please consider it and do not upload many `gds` files.
 
+Once you make a PR a github action will run a minimum set of DRC checks on each `gds` and `gds.zip` file. 
+If the test passes it means that your design is manufacturable at our pilot line not ensuring the reliability. 
+An example of a failure is shown on the follwoing figure 
+[!drc fail](drc/failure.png)
 
 > [!TIP]  
 > The DRC rejecttion test supports `gds` and `gds.zip` files. In a case of a large file (> 50 MB) you can split the `zip` file and upload multiple `zip` files. On linux you can perform it using the following command:
@@ -18,6 +22,9 @@ Make a fork of this repository and then push your data to it, then make a pull r
 ```
 zip -s 50m -r file.gds.zip output_folder/
 ```
+
+
+
 
 ## Directory structure
 
