@@ -13,11 +13,17 @@ Make a fork of this repository and then push your data to it, then make a pull r
 
 Once you make a PR a github action will run a minimum set of DRC checks on each `gds` and `gds.zip` file. 
 If the test passes it means that your design is manufacturable at our pilot line not ensuring the reliability. 
-An example of a failure is shown on the follwoing figure 
+An example of a failure is shown on the following figure 
+
 ![drc fail](drc/failure.png)
 
+The detailed report can be downloaded from a link, which can be found et the end of the section `Details->Archive DRC Results` as show on th image:
+
+
+![drc report](drc/report.png)
+
 > [!TIP]  
-> The DRC rejecttion test supports `gds` and `gds.zip` files. In a case of a large file (> 50 MB) you can split the `zip` file and upload multiple `zip` files. On linux you can perform it using the following command:
+> The DRC rejection test supports `gds` and `gds.zip` files. In a case of a large file (> 50 MB) you can split the `zip` file and upload multiple `zip` files. On linux you can perform it using the following command:
 
 ```
 zip -s 50m -r file.gds.zip output_folder/
@@ -36,7 +42,7 @@ If you are a designer, we propose the following directory structure, which we an
  ┣ 📁design_data
  ┃ ┗ 📁tool1/format1/step1
  ┃  ┗ data
- ┃ ┗ 📁tool2/format2/setep2
+ ┃ ┗ 📁tool2/format2/setp2
  ┃  ┗ data
  ┣ 📁doc
  ┃ ┣ 📜specification
@@ -87,5 +93,5 @@ Go to `source` directory to modify the `rst` files.
 
 ### Verification/validation data
 
-Since one of the principal goals of the OpenMPW runs is a creation of a silicon proven designs we epect from the designers to measure and validate the submitted design and then open source measurements results.
-This directory at the moment of the submission is only a placeholder for future measurments data. A report frm the measurements can be part of the documentation. 
+Since one of the principal goals of the OpenMPW runs is a creation of a silicon proven designs we expect from the designers to measure and validate the submitted design and then open source measurements results.
+This directory at the moment of the submission is only a placeholder for future measurments data. A report from the measurements can be part of the documentation. 
