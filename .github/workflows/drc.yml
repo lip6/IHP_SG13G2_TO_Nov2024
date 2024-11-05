@@ -39,7 +39,7 @@ jobs:
                 id: get-changed-files-Push
                 run: |
                     git fetch origin ${{ github.event.before }}
-                    changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+                    changed_files=$(git diff --diff-filter=ACMRT --name-only ${{ github.event.before }} ${{ github.sha }})
                     files_json=$(echo "$changed_files" | jq -R -s -c 'split("\n") | map(select(length > 0))')
                     echo $files_json
                     echo "files=$files_json" >> $GITHUB_OUTPUT
@@ -49,7 +49,7 @@ jobs:
                 id: get-changed-files-Pull
                 run: |
                     git fetch origin ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
-                    changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
+                    changed_files=$(git diff --diff-filter=ACMRT --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
                     files_json=$(echo "$changed_files" | jq -R -s -c 'split("\n") | map(select(length > 0))')
                     echo $files_json
                     echo "files=$files_json" >> $GITHUB_OUTPUT
