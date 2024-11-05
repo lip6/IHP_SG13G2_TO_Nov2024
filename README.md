@@ -14,7 +14,7 @@ Make a fork of this repository and then push your data to it, then make a pull r
 Once you make a PR a github action will run a minimum set of DRC checks on each `gds` and `gds.zip` file. 
 If the test passes it means that your design is manufacturable at our pilot line not ensuring the reliability. 
 An example of a failure is shown on the follwoing figure 
-[!drc fail](drc/failure.png)
+![drc fail](drc/failure.png)
 
 > [!TIP]  
 > The DRC rejecttion test supports `gds` and `gds.zip` files. In a case of a large file (> 50 MB) you can split the `zip` file and upload multiple `zip` files. On linux you can perform it using the following command:
