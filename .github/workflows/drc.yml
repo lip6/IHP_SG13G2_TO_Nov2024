@@ -35,7 +35,7 @@ jobs:
             -   name: Get all files
                 uses: actions/checkout@master
             -   name: Get changed files
-                if: github.event_name == 'pull_request'
+                if: github.event_name == 'pull_request' || github.event_name == 'push'
                 id: get-changed-files
                 run: |
                   changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
