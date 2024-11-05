@@ -9,8 +9,9 @@ ReadTheDocs documentation for IHP-Open-DesignLib is [here](https://ihp-open-ip.r
 ## Submission process
 
 Make a fork of this repository and then push your data to it. Then make a pull request.
-[!CAUTION]  
-On each PR a github action will be triggered to run a minimal DRC precheck (rejection test)
+
+> [!CAUTION]  
+> On each PR a github action will be triggered to run a minimal DRC precheck (rejection test)
 
 ## Directory structure
 
