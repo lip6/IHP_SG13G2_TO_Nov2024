@@ -1,14 +1,12 @@
 # TO_Nov2024
 
-The TO_NOV repository is dedicated fo submission of open source designs, based on IHP 130nm BiCMOS Open Source PDK,
-during November's 2024 edition of IHP OpenMPW program. In the future this repository will be integrated as a submodule
-to the `IHP-Open-DesignLib` repository.
+The TO_NOV repository is dedicated to the submission of open-source designs based on the IHP 130nm BiCMOS Open Source PDK, specifically for the November 2024 edition of the IHP OpenMPW program. In the future, this repository will be integrated as a submodule within the `IHP-Open-DesignLib` repository.
 
 ReadTheDocs documentation for IHP-Open-DesignLib is [here](https://ihp-open-ip.readthedocs.io/en/latest/)
 
 ## Submission process
 
-Make a fork of this repository and then push your data to it. Then make a pull request.
+Make a fork of this repository and then push your data to it, then make a pull request.
 
 > [!CAUTION]  
 > On each PR a github action will be triggered to run a minimal DRC precheck (rejection test). Please consider it and do not upload many `gds` files.
@@ -23,9 +21,9 @@ zip -s 50m -r file.gds.zip output_folder/
 
 ## Directory structure
 
-If you are a designer here we propose a directory structure, which we and the community would appreciate you use.
-Keep in mind that the design you submitt should be reproducible, what means that it should provide all the information
-necesary to reproduce the design. 
+If you are a designer, we propose the following directory structure, which we and the community would appreciate you using. Please ensure that the design you submit is reproducible, meaning it should include all the information necessary to replicate the design.
+
+
 ```text
 📁<design_name>
  ┣ 📁design_data
