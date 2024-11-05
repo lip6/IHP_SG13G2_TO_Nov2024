@@ -34,16 +34,21 @@ jobs:
         steps:
             -   name: Get all files
                 uses: actions/checkout@master
-            -   name: Get changed files
-                if: github.event_name == 'pull_request'
-                id: get-changed-files
+            -   name: Get changed files Push
+                if: github.event_name == 'push'
+                id: get-changed-files-Push
                 run: |
-                    if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-                        changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
-                    else
-                        git fetch origin ${{ github.event.before }}
-                        changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
-                    fi
+                    git fetch origin ${{ github.event.before }}
+                    changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+                    files_json=$(echo "$changed_files" | jq -R -s -c 'split("\n") | map(select(length > 0))')
+                    echo $files_json
+                    echo "files=$files_json" >> $GITHUB_OUTPUT
+                shell: bash
+            -   name: Get changed files Pull
+                if: github.event_name == 'pull_request'
+                id: get-changed-files-Pull
+                run: |
+                    changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
                     files_json=$(echo "$changed_files" | jq -R -s -c 'split("\n") | map(select(length > 0))')
                     echo $files_json
                     echo "files=$files_json" >> $GITHUB_OUTPUT
@@ -74,7 +79,7 @@ jobs:
             -   name: drc
                 run: |
                     klayout -v;
-                    files=${{ steps.get-changed-files.outputs.files || steps.manual-files.outputs.files }}
+                    files=${{ steps.get-changed-files-pull.outputs.files || steps.get-changed-files-push.outputs.files || steps.manual-files.outputs.files }}
                     mkdir ${{ github.workspace }}/drc/Results
                     result=true;
                     Zips=0
