@@ -11,7 +11,15 @@ ReadTheDocs documentation for IHP-Open-DesignLib is [here](https://ihp-open-ip.r
 Make a fork of this repository and then push your data to it. Then make a pull request.
 
 > [!CAUTION]  
-> On each PR a github action will be triggered to run a minimal DRC precheck (rejection test)
+> On each PR a github action will be triggered to run a minimal DRC precheck (rejection test). Please consider it and do not upload many `gds` files.
+
+
+> [!TIP]  
+> The DRC rejecttion test supports `gds` and `gds.zip` files. In a case of a large file (> 50 MB) you can split the `zip` file and upload multiple `zip` files. On linux you can perform it using the following command:
+
+```
+zip -s 50m -r file.gds.zip output_folder/
+```
 
 ## Directory structure
 
@@ -64,6 +72,13 @@ Example2
 ### Documentation
 
 In the `doc` folder the designer should provide the documentation. The best option would be any markdown language compatible with `sphinx` and thus ReadTheDocs system. It would make it easy to create a central point for documentation in the `IHP-Open-DesignLib` repository. 
+We also provide a basic template for the documentation in the `ExampleDesign/doc` directory. To use it execute the following:
+```
+cd ExampleDesign
+pip install -r requirements.txt
+make docs
+```
+Go to `source` directory to modify the `rst` files.
 
 ### Verification/validation data
 
