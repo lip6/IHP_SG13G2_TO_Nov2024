@@ -34,6 +34,10 @@ jobs:
         steps:
             -   name: Get all files
                 uses: actions/checkout@master
+            -   name: Set up GitHub CLI
+                uses: actions/setup-gh@v2
+                with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
             -   name: Get changed files Push
                 if: github.event_name == 'push'
                 id: get-changed-files-Push
