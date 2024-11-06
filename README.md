@@ -1,11 +1,16 @@
 # TO_Nov2024
 
-The TO_NOV repository is dedicated to the submission of open-source designs based on the IHP 130nm BiCMOS Open Source PDK, specifically for the November 2024 edition of the IHP OpenMPW program. In the future, this repository will be integrated as a submodule within the `IHP-Open-DesignLib` repository.
+The `TO_NOV2024` repository is dedicated to the submission of open-source designs based on the IHP 130nm BiCMOS Open Source PDK, specifically for the November 2024 edition of the IHP OpenMPW program. In the future, this repository will be integrated as a submodule within the `IHP-Open-DesignLib` repository.
 
 ReadTheDocs documentation for IHP-Open-DesignLib is [here](https://ihp-open-ip.readthedocs.io/en/latest/)
 
-## Submission process
+## Physical design constraint
 
+1. Please align with the layout design rules which can be found [here](https://github.com/IHP-GmbH/IHP-Open-PDK/blob/main/ihp-sg13g2/libs.doc/doc/SG13G2_os_layout_rules.pdf)
+2. The area granted to a community member is 2 mm^2 It includes the sealring.
+3. The sealring can be found among klayout PyCells.
+
+## Submission process
 
 To submit for our OpenMPW run you have to have a valid github account. 
 Make a fork of this repository and then create a separate directory for your design next to the `ExampleDesign` (you can also make a copy and rename it). 
@@ -29,7 +34,6 @@ The detailed report can be downloaded from a link, which can be found at the end
 > [!TIP]  
 > To be sure that the design meets the minimum DRC requirements we strongly recommend to run it using klayout DRC as shown below:
 >![drc klayout](drc/klayout_mindrc.png)
-
 
 
 > [!TIP]  
