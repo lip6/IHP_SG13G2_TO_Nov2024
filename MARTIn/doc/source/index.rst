@@ -12,8 +12,8 @@ MARTIn (Median Algorithm Reduced Test Interface) chip
     validation
 
 
-.. image:: _static/IHP_logo.png
+.. image:: _static/chip_view.png
     :align: center
-    :alt: IHP Logo Image.
+    :alt: Chip preview.
     :width: 400
 
