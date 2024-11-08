@@ -20,5 +20,7 @@ of the netlist simulation.
 
 Klayout was utilized to merge GDS files, visualization and to test the DRC and LVS of the design.
 
+After all that process, a chip filling script was utilized to remove DRC errors. 
+
 Finally the chip netlist was simulated to verify the intended functionality.
 
