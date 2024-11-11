@@ -37,3 +37,28 @@ With the intent to test this algoritm, the team proposed a smaller chip with onl
 possibility to subract the median value of the input. Also, this chip encompasses LFSR to test chip speeds \
 and a 200 bytes shift register to test radiation tolerance. 
 
+Chip Pinout
+###########
+
+.. image:: _static/chip_pinout.png
+    :align: center
+    :alt: Chip preview.
+    :width: 400
+
+Pins:
+    - VDD, VSS, IOVDD, IOVSS : power Pins
+    - clk, rst : general control signals
+    - data_in : data input for internal registers or median filter
+    - data_out : data output from median filter
+    - wr_enable : enable write in internal register
+    - reg_addr : selects the register to be written
+    - out_select : selects from median filter output, transparency mode and filter mode
+        - 2'b00: data_out = median_value
+        - 2'b01: Filter mode (data_out = data_in - median value)
+        - 2'b10: Transparency mode (data_out = data_in)
+        - 2'b00: data_out = median_value
+    - shreg_in : shift register input
+    - shreg_out : shift register output
+    - lfsr_out : Linear-feedback shift register output (Pseudo random number generator)
+    - aux_enable : enables the LFSR and shift register
+
