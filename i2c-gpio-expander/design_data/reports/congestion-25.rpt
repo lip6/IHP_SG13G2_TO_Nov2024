@@ -1,0 +1,32 @@
+violation type: Horizontal congestion
+	srcs: net:sg13g2_IOPad_io_gpio_5_p2c
+	comment: capacity:0 usage:1 overflow:1
+	bbox = (309.6000, 360.0000) - (316.8000, 367.2000) on Layer -
+violation type: Horizontal congestion
+	srcs: net:sg13g2_IOPad_io_gpio_6_p2c
+	comment: capacity:0 usage:1 overflow:1
+	bbox = (309.6000, 489.6000) - (316.8000, 496.8000) on Layer -
+violation type: Horizontal congestion
+	srcs: net:sg13g2_IOPad_io_gpio_7_p2c
+	comment: capacity:0 usage:1 overflow:1
+	bbox = (309.6000, 554.4000) - (316.8000, 561.6000) on Layer -
+violation type: Horizontal congestion
+	srcs: net:sg13g2_IOPad_io_address_0_p2c
+	comment: capacity:0 usage:1 overflow:1
+	bbox = (727.2000, 496.8000) - (734.4000, 504.0000) on Layer -
+violation type: Horizontal congestion
+	srcs: net:sg13g2_IOPad_io_address_1_p2c
+	comment: capacity:0 usage:1 overflow:1
+	bbox = (727.2000, 597.6000) - (734.4000, 604.8000) on Layer -
+violation type: Horizontal congestion
+	srcs: net:sg13g2_IOPad_io_address_2_p2c
+	comment: capacity:0 usage:1 overflow:1
+	bbox = (727.2000, 669.6000) - (734.4000, 676.8000) on Layer -
+violation type: Vertical congestion
+	srcs: net:sg13g2_IOPad_io_address_0_p2c
+	comment: capacity:0 usage:1 overflow:1
+	bbox = (734.4000, 496.8000) - (741.6000, 504.0000) on Layer -
+violation type: Vertical congestion
+	srcs: net:sg13g2_IOPad_io_address_0_p2c
+	comment: capacity:0 usage:1 overflow:1
+	bbox = (734.4000, 504.0000) - (741.6000, 511.2000) on Layer -
