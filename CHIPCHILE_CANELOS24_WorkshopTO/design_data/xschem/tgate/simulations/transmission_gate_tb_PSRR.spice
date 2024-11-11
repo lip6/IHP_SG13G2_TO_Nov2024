@@ -1,0 +1,57 @@
+** sch_path: /workspaces/usm-vlsi-tools/shared_xserver/AnalogMux-Workshop/design_data/xschem/tgate/transmission_gate_tb_PSRR.sch
+**.subckt transmission_gate_tb_PSRR
+Vpow Vdd GND dc 1.2 ac 1
+Vp Vdd net2 0
+.save i(vp)
+Ven en_p GND 1.2
+Ven1 en_n GND 0
+x1 net2 en_n net1 Vout en_p GND transmission_gate
+V1 net1 GND 1.2
+R1 Vout GND 10k m=1
+**** begin user architecture code
+
+.lib cornerMOSlv.lib mos_tt
+.lib cornerRES.lib res_typ
+
+
+
+.param temp=27
+.options noacct
+.control
+save all
+ac dec 101 1Meg 10G
+meas ac vout_at FIND vout AT=100MEG
+let PSRR=20*log10(-vout_at)
+print PSRR
+write psrr.raw
+set hcopydevtype=svg
+set color0=white
+set color1=black
+set color2=red
+set color3=blue
+set color4=green
+hardcopy psrr1.svg vout  title 'Power supply transfet function' xlabel 'frequency' ylabel 'Vout' xlog
+.endc
+
+
+**** end user architecture code
+**.ends
+
+* expanding   symbol:  transmission_gate.sym # of pins=6
+** sym_path: /workspaces/usm-vlsi-tools/shared_xserver/AnalogMux-Workshop/design_data/xschem/tgate/transmission_gate.sym
+** sch_path: /workspaces/usm-vlsi-tools/shared_xserver/AnalogMux-Workshop/design_data/xschem/tgate/transmission_gate.sch
+.subckt transmission_gate vdd en_n inout_1 inout_2 en_p vss
+*.iopin inout_1
+*.iopin inout_2
+*.ipin en_p
+*.iopin vdd
+*.iopin vss
+*.ipin en_n
+XM1 inout_2 en_p inout_1 net1 sg13_lv_nmos w=200.0u l=0.130u ng=20 m=1
+XM2 inout_1 en_n inout_2 net2 sg13_lv_pmos w=200.0u l=0.130u ng=20 m=1
+XR1 net2 vdd ntap1
+XR2 net1 vss ptap1
+.ends
+
+.GLOBAL GND
+.end
