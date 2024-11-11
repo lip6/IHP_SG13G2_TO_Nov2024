@@ -42,7 +42,7 @@ Chip Pinout
 
 .. image:: _static/chip_pinout.png
     :align: center
-    :alt: Chip preview.
+    :alt: Chip pinout.
     :width: 400
 
 Pins:
@@ -62,3 +62,11 @@ Pins:
     - lfsr_out : Linear-feedback shift register output (Pseudo random number generator)
     - aux_enable : enables the LFSR and shift register
 
+Chip Block Diagram
+##################
+
+
+.. image:: _static/block_diagram.png
+    :align: center
+    :alt: Chip block diagram.
+    :width: 400
