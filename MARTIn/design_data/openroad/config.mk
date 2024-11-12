@@ -20,7 +20,7 @@ export CORE_AREA = 390.0 390.0 980.0 980.0
 export TNS_END_PERCENT = 100
 export PDN_TCL = ./pdn.tcl
 
-export USE_FILL = 1
+export USE_FILL = 0
 
 
 

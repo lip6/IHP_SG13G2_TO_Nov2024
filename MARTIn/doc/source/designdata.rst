@@ -6,7 +6,8 @@ This project was made utilizing:
     - sv2v (v0.0.12-17-g5374679)
     - OpenRoad (contained in i2c-gpio-expander, commit: c2c17bf)
     - Klayout (contained in i2c-gpio-expander, commit: c2c17bf)
-    - filler.py (contained in i2c-gpio-expander, commit: c2c17bf)
+    - IHP sg13g2 PDK (https://github.com/KrzysztofHerman/IHP-Open-PDK, branch: fillerDSNov2024)
+    - filler.py (https://github.com/KrzysztofHerman/IHP-Open-PDK, branch: fillerDSNov2024)
     - sealring.py (contained in i2c-gpio-expander, commit: c2c17bf)
     - OpenSTA (2.6.0)
 
