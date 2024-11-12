@@ -1,21 +1,25 @@
+Welcome to Mixed Signal design track documentation!
+======================================================
 
-********************************************************
-Welcome to Amazing Design Open Source PDK documentation!
-********************************************************
 
+.. note::
+
+   This documentation is to help the participants of Canelos Workshop to 
+   design an analog/switch multiplexer using open source tools and IHP-Open=PDK.
+
+Contents
+--------
 
 .. toctree::
-    :hidden:
-    
-    specification
-    designdata
-    validation
 
-.. warning::
-    This documentation is currently a **work in progress**.
-
-.. image:: _static/IHP_logo.png
-    :align: center
-    :alt: IHP Logo Image.
-    :width: 400
-
+   schedule
+   resources
+   spec
+   architecture
+   schematic
+   simulation
+   testbenches
+   layout
+   physicalverification
+   OpenROAD-flow-scripts
+   Integration

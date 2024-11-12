@@ -2,9 +2,9 @@
 
 # -- Project information
 
-project = 'Amazing Design'
-copyright = '2024, IHP Open PDK'
-author = 'Amazing Design Authors'
+project = 'CanelosWorkshop'
+copyright = '2024, Canelos'
+author = 'Graziella'
 
 release = '0.1'
 version = '0.1.0'
