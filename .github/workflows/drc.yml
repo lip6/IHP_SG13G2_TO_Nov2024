@@ -20,7 +20,7 @@ name: DRC
 on: 
     push:
     pull_request:
-        types: [opened, reopened]
+        branches: [ main]
     workflow_dispatch:
         inputs:
             files:
