@@ -1,22 +1,26 @@
 
 import os
 from   pathlib import Path
-from   pdks.c4m_ihpsg13g2 import setup
+import pdks.c4m_ihpsg13g2
 
-setup()
+pdks.c4m_ihpsg13g2.setup()
 
 DOIT_CONFIG = { 'verbosity' : 2 }
 
-from coriolis                     import CRL
-from coriolis.designflow.task     import ShellEnv
-from coriolis.designflow.pnr      import PnR
-from coriolis.designflow.yosys    import Yosys
-from coriolis.designflow.blif2vst import Blif2Vst
-from coriolis.designflow.alias    import Alias
-from coriolis.designflow.klayout  import Klayout, DRC
-from coriolis.designflow.copy     import Copy
-from coriolis.designflow.clean    import Clean
-from doDesign                     import scriptMain
+from coriolis                               import CRL
+from coriolis.designflow.task               import ShellEnv
+from coriolis.designflow.pnr                import PnR
+from coriolis.designflow.yosys              import Yosys
+from coriolis.designflow.blif2vst           import Blif2Vst
+from coriolis.designflow.alias              import Alias
+from coriolis.designflow.klayout            import Klayout, DRC
+from coriolis.designflow.copy               import Copy
+from coriolis.designflow.clean              import Clean
+from pdks.c4m_ihpsg13g2.designflow.filler   import Filler
+from pdks.c4m_ihpsg13g2.designflow.sealring import SealRing
+from doDesign                               import scriptMain
+
+fillerScript = pdks.c4m_ihpsg13g2.pdkIHPTop / 'libs.tech' / 'klayout' / 'tech' / 'scripts' / 'filler.py'
 
 PnR.textMode = True
 pnrSuffix    = '_cts_r'
@@ -46,6 +50,13 @@ rulePnR   = PnR     .mkRule( 'gds'  , [ 'chip_r.gds'
 #                                      , [ruleB2V]
 #                                    , scriptMain
 #                                    , topName=topName )
+ruleFiller = Filler.mkRule( 'filler', depends=[ rulePnR.file_target(0) ]
+                                    , targets=[ 'filled.gds' ]
+                                    , flags  =Filler.NoActiv
+                                    )
+ruleSeal   = SealRing.mkRule( 'sealring', targets=[ 'chip_r_seal.gds' ]
+                                        , size   =[ 1714.0, 1884.0 ]
+                                        )
 ruleFMD = Copy.mkRule( 'fmd', '../gds/FMD_QNC_Arlet6502.gds', [rulePnR] )
 shellEnv = ShellEnv()
 shellEnv[ 'SOURCE_FILE' ] = rulePnR.file_target(0).as_posix()
@@ -57,4 +68,4 @@ ruleDRC    = DRC   .mkRule( 'drc', rulePnR.file_target(0) )
 # To run individual tools in stand-alone mode.
 ruleCgt     = PnR    .mkRule( 'cgt' )
 ruleKlayout = Klayout.mkRule( 'klayout', depends=rulePnR.file_target(0) )
-ruleClean   = Clean .mkRule( [ 'lefRWarning.log', 'cgt.log' ] )
+ruleClean   = Clean  .mkRule( [ 'lefRWarning.log', 'cgt.log' ] )

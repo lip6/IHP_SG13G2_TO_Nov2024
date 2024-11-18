@@ -29,7 +29,7 @@ def scriptMain ( **kw ):
         cfg.misc.bug                    = False
         cfg.misc.logMode                = True
         cfg.misc.verboseLevel1          = True
-        cfg.misc.verboseLevel2          = False
+        cfg.misc.verboseLevel2          = True
         cfg.misc.minTraceLevel          = 16000
         cfg.misc.maxTraceLevel          = 17000
         cfg.anabatic.routingGauge       = None   # Trigger disk loading.
@@ -142,7 +142,7 @@ def scriptMain ( **kw ):
        # etesian.spaceMargin is ignored if the coreSize is directly set.
        #designConf.cfg.etesian.spaceMargin         = 0.10
        #designConf.cfg.anabatic.searchHalo         = 2
-        designConf.cfg.anabatic.globalIterations   = 6
+        designConf.cfg.anabatic.globalIterations   = 10
         designConf.cfg.katana.hTracksReservedLocal = 15
         designConf.cfg.katana.vTracksReservedLocal = 15
         designConf.cfg.katana.hTracksReservedMin   = 6
@@ -153,7 +153,7 @@ def scriptMain ( **kw ):
         designConf.cfg.chip.padCoreSide            = 'North'
         designConf.editor              = editor
         designConf.useSpares           = True
-        designConf.useHFNS             = False
+        designConf.useHFNS             = True
         designConf.bColumns            = 2
         designConf.bRows               = 2
         designConf.chipName            = 'chip'
