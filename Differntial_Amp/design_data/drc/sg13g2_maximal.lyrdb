@@ -1,34 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <report-database>
  <description>design rules: sg13g2_maximal | layout cell: DiffAmp_NOFILL</description>
- <original-file>/home/toomass/TO_Nov2024/Differntial_Amp_50MHz/design_data/gds/OTA_TIA.gds</original-file>
+ <original-file>/home/toomass/TO_Nov2024/Differntial_Amp/design_data/gds/OTA_TIA.gds</original-file>
  <generator>drc: script='/home/toomass/IHP-Open-PDK/ihp-sg13g2/libs.tech/klayout/tech/drc/sg13g2_maximal.lydrc'</generator>
  <top-cell>DiffAmp_NOFILL</top-cell>
  <tags>
-  <tag>
-   <name>waived</name>
-   <description/>
-  </tag>
-  <tag>
-   <name>red</name>
-   <description/>
-  </tag>
-  <tag>
-   <name>green</name>
-   <description/>
-  </tag>
-  <tag>
-   <name>blue</name>
-   <description/>
-  </tag>
-  <tag>
-   <name>yellow</name>
-   <description/>
-  </tag>
-  <tag>
-   <name>important</name>
-   <description/>
-  </tag>
  </tags>
  <categories>
   <category>
@@ -2676,53 +2652,5 @@
   </cell>
  </cells>
  <items>
-  <item>
-   <tags/>
-   <category>'M2.j'</category>
-   <cell>DiffAmp_NOFILL</cell>
-   <visited>true</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (0,0;0,700;700,700;700,0)</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'M3.j'</category>
-   <cell>DiffAmp_NOFILL</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (0,0;0,700;700,700;700,0)</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'M4.j'</category>
-   <cell>DiffAmp_NOFILL</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (0,0;0,700;700,700;700,0)</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>'M5.j'</category>
-   <cell>DiffAmp_NOFILL</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (0,0;0,700;700,700;700,0)</value>
-   </values>
-  </item>
  </items>
 </report-database>
