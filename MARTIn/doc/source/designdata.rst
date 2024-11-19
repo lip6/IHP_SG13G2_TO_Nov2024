@@ -11,19 +11,81 @@ This project was made utilizing:
     - sealring.py (contained in i2c-gpio-expander, commit: c2c17bf)
     - OpenSTA (2.6.0)
 
-The source files of the chip were developed in System Verilog language. \
+This project was developed as the following:
+
+0. Verification
+
+Theses design can be verified utilizind the two testbenches provided in 📁design_data/testbench. These can run utilizing the source files contained in 📁design_data/src/pre_synthesis_files.
+
+
+1. SV to Verilog Conversion
+
+The source files of the chip's filter were developed in System Verilog language. \
 To enable its synthesis, they were converted using sv2v open source tool that converted them to Yosys readable \
 verilog files.
 
 .. code-block:: language
 
-   ./sv2v [input_files] > output.v
+   ./sv2v comb_comparator.sv comb_counter.sv filter_top.sv median_brute.sv > filter.v
 
 The team also developed SDC, pad placment and power placment files that were necessary in the OpenRoad flow. \
 Using the OpenRoad flow, the final GDS, SDC, netlist, SPEF and DEF files were generated. 
 
-The OpenRoad flow utilized to synthesize this project was the one contained in the i2c-gpio-expander \
+2. Creating the sealring
+
+The sealring was created utilizing the sealring python script provided in the IHP-Open-PDK with the dimensions of 1370x1370
+      
+
+3. OpenRoad Flow Scripts utilization
+
+The OpenRoad flow scripts utilized to synthesize this project was the one contained in the i2c-gpio-expander \
 (https://github.com/aesc-silicon/i2c-gpio-expander). 
+
+Utilizing the following structure we can run the flow:
+
+```
+  i2c_gpio_expander
+   ┗ ...
+   ┗ 📁martin
+      ┗ 📁cfg
+         ┗ ...
+      ┗ 📁src
+         ┗ filter.v
+         ┗ shreg.v
+         ┗ lfsr.v
+         ┗ martin_top.v
+   ┗ ...
+```
+
+The cfg folder is provided in this repository in 📁design_data/cfg. The src files are provided in 📁design_data/src/pre_synthesis_files.
+
+To execute the flow the following code was added in the Makefile
+
+.. code-block:: language
+
+   martin-filler: KLAYOUT_HOME=${PDK_SG13G2_KLAYOUT_DIR}
+   martin-filler: PDK_ROOT=./pdks/IHP-Open-PDK
+   martin-filler: PDK=ihp-sg13g2
+
+   martin-filler:
+	klayout -n sg13g2 -zz -r ${KLAYOUT_HOME}/tech/scripts/filler.py \
+		-rd output_file=${OPENROAD_FLOW_ROOT}/results/ihp-sg13g2/martin/base/6_final.gds \
+		${OPENROAD_FLOW_ROOT}/results/ihp-sg13g2/martin/base/6_final.gds
+
+   martin-gds:
+      source ${OPENROAD_FLOW_ROOT}/../env.sh && make -C ${OPENROAD_FLOW_ROOT} DESIGN_CONFIG=[location]/i2c-gpio-expander/martin/cfg/config.mk
+
+   martin-synth: martin-gds martin-filler
+
+
+And then you can run:
+
+.. code-block:: language
+
+   podman exec --workdir=$PWD -it i2c-gpio-expander_container bash -c 'make martin-synth'
+
+
+4. SDF generation
 
 These generated files were used in OpenSTA to generate a SDF annotation file, capable of improving the accuracy \
 of the netlist simulation.
@@ -38,9 +100,14 @@ of the netlist simulation.
    read_sdc [flow output sdc]
    write_sdf [sdf_file]
 
-Klayout was utilized to merge GDS files, visualization and to test the DRC and LVS of the design.
+5. DRC checks
 
-After all that process, a chip filling script was utilized to remove DRC errors. 
+Klayout was utilized to visualization and to test the DRC of the design.
 
-Finally the chip netlist was simulated to verify the intended functionality.
+6. Verification
+
+The final verification was made in Cadence Xcelium to ensure gate-level functionality of the chip. But an open source alternative can be ran utilizing Icarus Verilog and the filter_tb.v \
+with the output netlist of the process. The shift register doesn't work due to the Icarus verilog not being able to properly execute the Flip-flops in the sg13g2 verilog file for std cells.
+
+
 
