@@ -107,7 +107,39 @@ Klayout was utilized to visualization and to test the DRC of the design.
 6. Verification
 
 The final verification was made in Cadence Xcelium to ensure gate-level functionality of the chip. But an open source alternative can be ran utilizing Icarus Verilog and the filter_tb.v \
-with the output netlist of the process. The shift register doesn't work due to the Icarus verilog not being able to properly execute the Flip-flops in the sg13g2 verilog file for std cells.
+with the output netlist of the process. 
+
+To execute the functional verification of the shift_register, it's necessary to edit the sg13g2_stdcell.v. The Iverilog simulator only executes functional verification and do not \
+fully support specify blocks, so for the functional verification the following alteration is needed:
 
 
+.. code-block:: verilog
 
+   `timescale 1ns/10ps
+   `celldefine
+   module sg13g2_dfrbp_1 (Q, Q_N, D, RESET_B, CLK);
+      output reg Q, Q_N;
+      input D, RESET_B, CLK;
+      reg notifier;
+      wire delayed_D, delayed_RESET_B, delayed_CLK;
+
+      // Function
+      wire int_fwire_IQ, int_fwire_IQN, int_fwire_r;
+      wire xcr_0;
+
+      
+      //Functional description
+      always @(posedge CLK or negedge RESET_B) begin
+         if(RESET_B == 1'b0) begin
+            Q <= 1'b0;
+         end else begin
+            Q <= D;
+            Q_N <= ~D;
+         end
+      end
+
+   endmodule
+   `endcelldefine
+
+
+To prove the gate-level verification is working the .vcd file is provided in the 📁design_data/vcd folder.
