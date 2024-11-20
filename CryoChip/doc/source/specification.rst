@@ -19,24 +19,27 @@ Chip Pinout
 
 NMOS Transistors:
 
-•	GP1, GP2, GP3, GP4, GP5, GP6, GP7, GP8: Gate terminal of the transistor
-•	DP1, DP2, DP3, DP4, DP5, DP6, DP7, DP8: Drain terminal of the transistor
-•	SP1, SP2, SP3, SP4, SP5, SP6, SP7, SP8: Source terminal of the transistor
-•	BP1, BP2, BP3, BP4, BP5, BP6, BP7, BP8: Bulk terminal of the transistor
+-	GP1, GP2, GP3, GP4, GP5, GP6, GP7, GP8: Gate terminal of the transistor
+-	DP1, DP2, DP3, DP4, DP5, DP6, DP7, DP8: Drain terminal of the transistor
+-	SP1, SP2, SP3, SP4, SP5, SP6, SP7, SP8: Source terminal of the transistor
+-	BP1, BP2, BP3, BP4, BP5, BP6, BP7, BP8: Bulk terminal of the transistor
 
 PMOS Transistors:
+
 -	GP1, GP2, GP3, GP4, GP5, GP6, GP7, GP8: Gate terminal of the transistor
 -	DP1, DP2, DP3, DP4, DP5, DP6, DP7, DP8: Drain terminal of the transistor
 -	SP1, SP2, SP3, SP4, SP5, SP6, SP7, SP8: Source terminal of the transistor
 -	BP1, BP2, BP3, BP4, BP5, BP6, BP7, BP8: Bulk terminal of the transistor
 
 Inverter:
+
 -	VDD: Power supply terminal of the inverter
 -	IN: Input terminal of the inverter
 -	OUT: Output terminal of the inverter
 -	GND: Ground terminal of the inverter
 
 Resistivity Measurement Devices:
+
 -	Rsub1: Terminal 1 of the substrate resistor
 -	Rsub2: Terminal 2 of the substrate resistor
 -	Rsub3: Terminal 3 of the substrate resistor
@@ -54,6 +57,7 @@ Resistivity Measurement Devices:
 
 
 NMOS and PMOS Characterization Structure:
+
 -	GPN: Common gate terminal of the NMOS and PMOS transistors
 -	BN: Common bulk terminal of the NMOS transistors
 -	BP: Common bulk terminal of the PMOS transistors 
