@@ -50,10 +50,12 @@ Resistivity Measurement Devices:
 -	Rsub3: Terminal 3 of the substrate resistor
 -	Rsub4: Terminal 4 of the substrate resistor
 
+
 -	Rnw1: Terminal 1 of the n-well resistor
 -	Rnw2: Terminal 2 of the n-well resistor
 -	Rnw3: Terminal 3 of the n-well resistor
 -	Rnw4: Terminal 4 of the n-well resistor
+
 
 -	Rm1: Terminal 1 of the metal1 resistor
 -	Rm2: Terminal 2 of the metal1 resistor
