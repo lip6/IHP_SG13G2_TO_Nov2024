@@ -17,6 +17,11 @@ The chip was configured to allow individual analysis of the designs, with all te
 Chip Pinout
 ###########
 
+.. image:: _static/chip_pinout.png
+    :align: center
+    :alt: Chip Pinout
+    :width: 400
+
 NMOS Transistors:
 
 -	GP1, GP2, GP3, GP4, GP5, GP6, GP7, GP8: Gate terminal of the transistor
