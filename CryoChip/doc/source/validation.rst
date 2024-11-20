@@ -1,6 +1,6 @@
-Validation  of the Amazing Design
+Validation  of the CryoChip
 #################################
 
 
-Document the measurement results here.
+The validation process of the design was carried out using DRC and LVS tests.
 
