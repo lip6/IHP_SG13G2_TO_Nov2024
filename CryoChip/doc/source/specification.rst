@@ -18,10 +18,10 @@ Chip Pinout
 ###########
 
 NMOS Transistors:
--	GN1, GN2, GN3, GN4, GN5, GN6, GN7, GN8: Gate terminal of the transistor
--	DN1, DN2, DN3, DN4, DN5, DN6, DN7, DN8: Drain terminal of the transistor
--	SN1, SN2, SN3, SN4, SN5, SN6, SN7, SN8: Source terminal of the transistor
--	BN1, BN2, BN3, BN4, BN5, BN6, BN7, BN8: Bulk terminal of the transistor
+•	GP1, GP2, GP3, GP4, GP5, GP6, GP7, GP8: Gate terminal of the transistor
+•	DP1, DP2, DP3, DP4, DP5, DP6, DP7, DP8: Drain terminal of the transistor
+•	SP1, SP2, SP3, SP4, SP5, SP6, SP7, SP8: Source terminal of the transistor
+•	BP1, BP2, BP3, BP4, BP5, BP6, BP7, BP8: Bulk terminal of the transistor
 
 PMOS Transistors:
 -	GP1, GP2, GP3, GP4, GP5, GP6, GP7, GP8: Gate terminal of the transistor
