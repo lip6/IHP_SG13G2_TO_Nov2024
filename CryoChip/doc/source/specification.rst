@@ -20,7 +20,7 @@ Chip Pinout
 .. image:: _static/chip_pinout.png
     :align: center
     :alt: Chip Pinout
-    :width: 400
+    :width: 800
 
 NMOS Transistors:
 
