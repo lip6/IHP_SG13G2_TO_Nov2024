@@ -18,6 +18,7 @@ Chip Pinout
 ###########
 
 NMOS Transistors:
+
 •	GP1, GP2, GP3, GP4, GP5, GP6, GP7, GP8: Gate terminal of the transistor
 •	DP1, DP2, DP3, DP4, DP5, DP6, DP7, DP8: Drain terminal of the transistor
 •	SP1, SP2, SP3, SP4, SP5, SP6, SP7, SP8: Source terminal of the transistor
