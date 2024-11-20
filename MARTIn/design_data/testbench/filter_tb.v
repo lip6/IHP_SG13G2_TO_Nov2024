@@ -111,6 +111,9 @@ module tb();
 
     initial begin
 
+	$dumpfile("filter.vcd"); 
+  	$dumpvars(0, tb);  
+
 
         // 1.Test - transparency test
         $display("1.Test - transparency test");
