@@ -10,8 +10,6 @@ N 600 -300 600 -280 {
 lab=GND}
 N 600 -380 600 -360 {
 lab=v_ss}
-N 1090 -380 1300 -380 {
-lab=v_ss}
 N 1050 -830 1090 -830 {
 lab=v_dd}
 N 1050 -550 1050 -380 {
@@ -20,6 +18,10 @@ N 1300 -530 1300 -380 {
 lab=v_ss}
 N 1300 -630 1300 -590 {
 lab=v_out}
+N 900 -510 1220 -510 {
+lab=v_out}
+N 900 -600 900 -510 {
+lab=v_out}
 N 900 -600 970 -600 {
 lab=v_out}
 N 700 -510 700 -380 {
@@ -27,6 +29,8 @@ lab=v_ss}
 N 600 -380 700 -380 {
 lab=v_ss}
 N 700 -660 700 -570 {
+lab=v_in}
+N 700 -660 970 -660 {
 lab=v_in}
 N 1090 -830 1090 -810 {
 lab=v_dd}
@@ -46,39 +50,44 @@ N 1050 -380 1090 -380 {
 lab=v_ss}
 N 1090 -550 1090 -460 {
 lab=v_ena}
-N 700 -660 970 -660 {
-lab=v_in}
-N 1200 -630 1300 -630 {
+N 1220 -630 1300 -630 {
 lab=v_out}
-N 1200 -630 1200 -510 {
-lab=v_out}
-N 1150 -630 1200 -630 {
-lab=v_out}
-N 900 -600 900 -510 {
-lab=v_out}
-N 900 -510 1200 -510 {
-lab=v_out}
+N 1090 -380 1300 -380 {
+lab=v_ss}
 N 700 -380 1050 -380 {
 lab=v_ss}
-C {devices/code_shown.sym} 0 -100 0 0 {name=MODEL only_toplevel=true
+N 1150 -630 1220 -630 {
+lab=v_out}
+N 1220 -630 1220 -510 {
+lab=v_out}
+C {devices/code_shown.sym} 0 -240 0 0 {name=MODEL only_toplevel=true
 format="tcleval( @value )"
 value=".lib cornerMOShv.lib mos_tt
 "}
 C {devices/code_shown.sym} 0 -750 0 0 {name=NGSPICE only_toplevel=true 
 value="
 .temp 27
-.ic v(v_vout)=0
 .control
+option sparse
+save all
+op
+write ota-5t_tb-ac.raw
+set appendwrite
 
-tran 0.005u 25u uic
-plot v_ena v_out
+ac dec 101 1k 100MEG
+write ota-5t_tb-ac.raw
+plot 20*log10(v_out)
 
-let vout_limit=0.8*0.99
-meas tran tcross WHEN v(v_out)=vout_limit
-let vena_limit=0.5*1.5
-meas tran tstart WHEN v(v_ena)=vena_limit
-let tsettle=tcross-tstart
-print tsettle
+meas ac dcgain MAX vmag(v_out) FROM=10 TO=10k
+let f3db = dcgain/sqrt(2)
+meas ac fbw WHEN vmag(v_out)=f3db FALL=1
+let gainerror=(dcgain-1)/1
+print dcgain
+print fbw
+print gainerror
+
+noise v(v_out) Vin dec 101 1k 100MEG
+print onoise_total
 
 .endc
 "}
@@ -100,12 +109,12 @@ C {lab_pin.sym} 600 -380 0 0 {name=p1 sig_type=std_logic lab=v_ss}
 C {capa.sym} 1300 -560 0 0 {name=C1
 value=50f}
 C {lab_wire.sym} 1300 -630 0 0 {name=p3 sig_type=std_logic lab=v_out}
-C {devices/vsource.sym} 700 -540 0 0 {name=Vin value=0.8}
+C {devices/vsource.sym} 700 -540 0 0 {name=Vin value="dc 1.65 ac 1"}
 C {lab_wire.sym} 760 -660 0 0 {name=p4 sig_type=std_logic lab=v_in}
-C {isource.sym} 1090 -780 0 0 {name=I0 value="dc 0 pwl(0 0 1.1u 0 1.2u 20u)"}
-C {vsource.sym} 1090 -430 0 0 {name=Venable value="dc 0 pwl(0 0 1u 0 1.1u 3.3)" savecurrent=false}
+C {isource.sym} 1090 -780 0 0 {name=I0 value=20u pwl(0 0 10u 0 11u 20u)"}
+C {vsource.sym} 1090 -430 0 0 {name=Venable value=3.3 savecurrent=false}
 C {spice_probe.sym} 820 -660 0 0 {name=p5 attrs=""}
 C {spice_probe.sym} 1180 -630 0 0 {name=p6 attrs=""}
 C {spice_probe.sym} 1090 -470 0 0 {name=p7 attrs=""}
 C {lab_wire.sym} 1090 -530 0 0 {name=p8 sig_type=std_logic lab=v_ena}
-C {/home/aidas93/Downloads/TO_Nov2024-main/Differntial_Amp/design_data/xschem/ota.sym} 1050 -630 0 0 {name=x1}
+C {/home/aidas93/Tape out/ota.sym} 1050 -630 0 0 {name=x1}
