@@ -12,6 +12,11 @@ To characterize circuits at both conventional and cryogenic temperatures, a chip
 -	1 inverter
 -	3 resistivity measurement devices based on the Van der Pauw structure
 
+.. image:: _static/schematic.png
+    :align: center
+    :alt: Chip Pinout
+    :width: 800
+
 The chip was configured to allow individual analysis of the designs, with all terminals used presented in the section below.
 
 Chip Pinout
