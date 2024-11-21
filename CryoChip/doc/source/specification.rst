@@ -27,6 +27,11 @@ Chip Pinout
     :alt: Chip Pinout
     :width: 800
 
+.. image:: _static/chip_view.png
+    :align: center
+    :alt: Chip Pinout
+    :width: 800
+
 NMOS Transistors:
 
 -	GP1, GP2, GP3, GP4, GP5, GP6, GP7, GP8: Gate terminal of the transistor
