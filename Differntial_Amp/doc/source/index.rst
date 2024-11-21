@@ -1,6 +1,6 @@
 
 ********************************************************
-Welcome to Amazing Design Open Source PDK documentation!
+KTU Mlab Transonductance amplifier
 ********************************************************
 
 
@@ -18,4 +18,11 @@ Welcome to Amazing Design Open Source PDK documentation!
     :align: center
     :alt: IHP Logo Image.
     :width: 400
+
+
+
+Introduction
+=============================
+
+This is first self-taught student work to familiarize with analog IC design flow. Made chip will be tested and measured in university lab.
 
