@@ -31,7 +31,7 @@ For the SNM measurement internal `bit` and `bit_n` signal of the SRAM cell needs
   See selected shapes in following image:
   ![snapshot](M2Area_violation.png)
   The rule is 0.144µm², smallest area present in the structures is 0.1263µm²
-* M1.c1.SRAM: Min. Metal1 endcap enclosure of Cont
+* V1.c1.SRAM: Min. Metal1 endcap enclosure of Via1
   This at place as previous violation; see selected shape in following image (same place as previous)
   ![snapshot](M1Via1Enclosure_violation.png)
   Here the enclosure is violating of the Via1 corner next to a 45deg Metal1 shape. The 45 degree line was introduced to not violate the Metal1 minimum spacing (M1.b) rule.
