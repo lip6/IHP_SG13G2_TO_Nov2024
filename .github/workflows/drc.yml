@@ -20,7 +20,7 @@ name: DRC
 on: 
     push:
     pull_request:
-        types: [opened, reopened]
+        branches: [ main]
     workflow_dispatch:
         inputs:
             files:
@@ -59,7 +59,7 @@ jobs:
                 id: manual-files
                 run: |
                   files_input="${{ github.event.inputs.files }}"
-                  
+
                   files_json=$(echo "$files_input" | jq -R -s -c 'split(",") | map(select(length > 0))')
                   echo $files_json
                   echo "files=$files_json" >> $GITHUB_OUTPUT
@@ -139,8 +139,9 @@ jobs:
                         if [[ $file =~ $FileRe ]]; then 
                             ZipRe="\.zip"
                             GDSRe="\.gds$"
+                            GDSGZRe="\.gds.gz$"
                             if [[ $file =~ $ZipRe ]]; then 
-                            
+
                                 ZIP_FILE="${{ github.workspace }}/${file}"
                                 # Target directory for unpacking
                                 EXTRACT_DIR="${ZIP_FILE%/*}/Folder$Zips"
@@ -164,7 +165,6 @@ jobs:
                                     echo "Run DRC for $ZipContentFile";
                                     path=$ZipContentFile;
                                     resultpath=${{ github.workspace }}/drc/Results/${ZipContentFile//[\/.]/_}.lyrdb;
-                                    
                                     RunDRC ${path} ${resultpath}
                                 done
                                 Zips=$((Zips + 1))
@@ -172,7 +172,12 @@ jobs:
                                 echo "Run DRC for $file";
                                 path=${{ github.workspace }}/${file};
                                 resultpath=${{ github.workspace }}/drc/Results/${file//[\/.]/_}.lyrdb;
-                            RunDRC ${path} ${resultpath}
+                                RunDRC ${path} ${resultpath}
+                            elif [[ $file =~ $GDSGZRe ]]; then
+                                echo "Run DRC for $file";
+                                path=${{ github.workspace }}/${file};
+                                resultpath=${{ github.workspace }}/drc/Results/${file//[\/.]/_}.lyrdb;
+                                RunDRC ${path} ${resultpath}
                             fi
                         fi
                     done

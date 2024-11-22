@@ -1,0 +1,4 @@
+End of script. Logfile hash: da39a3ee5e, CPU: user 0.00s system 0.00s, MEM: 10.00 MB peak
+Yosys 0.43+11 (git sha1 49f547782, clang++ 14.0.0-1ubuntu1.1 -fPIC -Os)
+Time spent: no commands executed
+Elapsed time: 0:00.00[h:]min:sec. CPU time: user 0.00 sys 0.00 (85%). Peak memory: 11392KB.
