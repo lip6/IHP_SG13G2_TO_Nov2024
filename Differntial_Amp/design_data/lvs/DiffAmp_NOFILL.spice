@@ -1,0 +1,42 @@
+** sch_path: /home/toomass/OTAAA/DiffAmp_NOFILL.sch
+.subckt DiffAmp_NOFILL vout vdd vss ibias_20u vinn vinp d_ena
+*.PININFO vout:O vdd:B vss:B ibias_20u:I vinn:I vinp:I d_ena:I
+M1 net2 vinn vout vss sg13_hv_nmos l=1u w=0.53u ng=1 m=4
+M2 net2 vinp net1 vss sg13_hv_nmos l=1u w=0.53u ng=1 m=4
+M5 vss net3 net2 vss sg13_hv_nmos l=1u w=0.76u ng=1 m=1
+M3 net1 net1 vdd vdd sg13_hv_pmos l=1u w=1.45u ng=1 m=1
+M4 vout net1 vdd vdd sg13_hv_pmos l=1u w=1.45u ng=1 m=1
+M6 vss net3 ibias_20u vss sg13_hv_nmos l=1u w=3.075u ng=5 m=1
+M7 net1 d_ena vdd vdd sg13_hv_pmos l=1u w=1.5u ng=1 m=1
+M8 net4 d_ena vdd vdd sg13_hv_pmos l=1u w=1.5u ng=1 m=1
+M9 net3 net4 ibias_20u vss sg13_hv_nmos l=1u w=0.5u ng=1 m=1
+M10 vss net4 net3 vss sg13_hv_nmos l=1u w=0.5u ng=1 m=1
+M11 vss d_ena net4 vss sg13_hv_nmos l=1u w=0.5u ng=1 m=1
+M12 vss vss vss vss sg13_hv_nmos l=0.5u w=0.5u ng=1 m=1
+M13 vss vss vss vss sg13_hv_nmos l=0.5u w=0.5u ng=1 m=1
+M14 vss vss vss vss sg13_hv_nmos l=0.5u w=0.76u ng=1 m=1
+M15 vss vss vss vss sg13_hv_nmos l=0.5u w=0.615u ng=1 m=1
+M16 vss vss vss vss sg13_hv_nmos l=0.5u w=0.615u ng=1 m=1
+M17 vss vss vss vss sg13_hv_nmos l=0.5u w=0.76u ng=1 m=1
+M18 vss vss vss vss sg13_hv_nmos l=0.5u w=0.5u ng=1 m=1
+M19 vss vss vss vss sg13_hv_nmos l=0.5u w=0.5u ng=1 m=1
+M20 vss vss vss vss sg13_hv_nmos l=0.5u w=0.53u ng=1 m=1
+M21 vss vss vss vss sg13_hv_nmos l=0.5u w=0.53u ng=1 m=1
+M22 vss vss vss vss sg13_hv_nmos l=0.5u w=0.53u ng=1 m=1
+M23 vss vss vss vss sg13_hv_nmos l=0.5u w=0.53u ng=1 m=1
+M24 vss vss vss vss sg13_hv_nmos l=1u w=0.5u ng=1 m=1
+M25 vss vss vss vss sg13_hv_nmos l=1u w=0.5u ng=1 m=1
+M26 vss vss vss vss sg13_hv_nmos l=0.5u w=0.5u ng=1 m=1
+M27 vss vss vss vss sg13_hv_nmos l=0.5u w=0.5u ng=1 m=1
+M28 vss vss vss vss sg13_hv_nmos l=0.5u w=0.53u ng=1 m=1
+M29 vss vss vss vss sg13_hv_nmos l=0.5u w=0.53u ng=1 m=1
+M30 vss vss vss vss sg13_hv_nmos l=0.5u w=0.53u ng=1 m=1
+M31 vss vss vss vss sg13_hv_nmos l=0.5u w=0.53u ng=1 m=1
+M32 vss vss vss vss sg13_hv_nmos l=1u w=0.5u ng=1 m=1
+M33 vss vss vss vss sg13_hv_nmos l=1u w=0.5u ng=1 m=1
+M34 vdd vdd vdd vdd sg13_hv_pmos l=0.5u w=1.45u ng=1 m=1
+M35 vdd vdd vdd vdd sg13_hv_pmos l=0.5u w=1.45u ng=1 m=1
+M36 vdd vdd vdd vdd sg13_hv_pmos l=0.5u w=1.45u ng=1 m=1
+M37 vdd vdd vdd vdd sg13_hv_pmos l=0.5u w=1.45u ng=1 m=1
+.ends
+.end
