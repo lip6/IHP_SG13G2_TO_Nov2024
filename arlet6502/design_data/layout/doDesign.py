@@ -2,7 +2,7 @@
 
 import sys
 import traceback
-from   coriolis.Hurricane  import DbU, Breakpoint, PythonAttributes
+from   coriolis.Hurricane  import DbU, Breakpoint, PythonAttributes, Instance, Transformation
 from   coriolis            import CRL, Cfg
 from   coriolis.helpers    import loadUserSettings, setTraceLevel, trace, overlay, l, u, n
 from   coriolis.helpers.io import ErrorMessage, WarningMessage, catch
@@ -29,7 +29,7 @@ def scriptMain ( **kw ):
         cfg.misc.bug                    = False
         cfg.misc.logMode                = True
         cfg.misc.verboseLevel1          = True
-        cfg.misc.verboseLevel2          = True
+        cfg.misc.verboseLevel2          = False
         cfg.misc.minTraceLevel          = 16000
         cfg.misc.maxTraceLevel          = 17000
         cfg.anabatic.routingGauge       = None   # Trigger disk loading.
@@ -73,53 +73,35 @@ def scriptMain ( **kw ):
             editor.setDbuMode( DbU.StringModePhysical )
         ioPadsSpec = [ (IoPin.WEST , None, 'di_0'       , 'DI(0)'  , 'DI(0)'  )
                      , (IoPin.WEST , None, 'di_1'       , 'DI(1)'  , 'DI(1)'  )
-                     , (IoPin.WEST , None, 'di_2'       , 'DI(2)'  , 'DI(2)'  )
-                     , (IoPin.WEST , None, 'di_3'       , 'DI(3)'  , 'DI(3)'  )
-                     , (IoPin.WEST , None, 'allpower_0' , 'iovdd'  , 'vdd'    )
-                     , (IoPin.WEST , None, 'allground_0', 'iovss'  , 'vss'    )
-                     , (IoPin.WEST , None, 'di_4'       , 'DI(4)'  , 'DI(4)'  )
-                     , (IoPin.WEST , None, 'di_5'       , 'DI(5)'  , 'DI(5)'  )
-                     , (IoPin.WEST , None, 'di_6'       , 'DI(6)'  , 'DI(6)'  )
-                     , (IoPin.WEST , None, 'di_7'       , 'DI(7)'  , 'DI(7)'  )
+                     , (IoPin.WEST , None, 'do_0'       , 'DO(0)'  , 'DO(0)'  )
+                     , (IoPin.WEST , None, 'do_1'       , 'DO(1)'  , 'DO(1)'  )
+                     , (IoPin.WEST , None, 'do_2'       , 'DO(2)'  , 'DO(2)'  )
+                     , (IoPin.WEST , None, 'do_3'       , 'DO(3)'  , 'DO(3)'  )
+                     , (IoPin.WEST , None, 'do_4'       , 'DO(4)'  , 'DO(4)'  )
+                     , (IoPin.WEST , None, 'do_5'       , 'DO(5)'  , 'DO(5)'  )
 
-                     , (IoPin.SOUTH, None, 'do_0'       , 'DO(0)'  , 'DO(0)'  )
-                     , (IoPin.SOUTH, None, 'do_1'       , 'DO(1)'  , 'DO(1)'  )
-                     , (IoPin.SOUTH, None, 'do_2'       , 'DO(2)'  , 'DO(2)'  )
-                     , (IoPin.SOUTH, None, 'do_3'       , 'DO(3)'  , 'DO(3)'  )
-                     , (IoPin.SOUTH, None, 'allpower_1' , 'iovdd'  , 'vdd'    )
-                     , (IoPin.SOUTH, None, 'allground_1', 'iovss'  , 'vss'    )
-                     , (IoPin.SOUTH, None, 'do_4'       , 'DO(4)'  , 'DO(4)'  )
-                     , (IoPin.SOUTH, None, 'do_5'       , 'DO(5)'  , 'DO(5)'  )
-                     , (IoPin.SOUTH, None, 'do_6'       , 'DO(6)'  , 'DO(6)'  )
-                     , (IoPin.SOUTH, None, 'do_7'       , 'DO(7)'  , 'DO(7)'  )
-                     , (IoPin.SOUTH, None, 'a_0'        , 'A(0)'   , 'A(0)'   )
-                     , (IoPin.SOUTH, None, 'a_1'        , 'A(1)'   , 'A(1)'   )
+                     , (IoPin.SOUTH, None, 'di_2'       , 'DI(2)'  , 'DI(2)'  )
+                     , (IoPin.SOUTH, None, 'allpower_0' , 'iovdd'  , 'vdd'    )
+                     , (IoPin.SOUTH, None, 'allground_0', 'iovss'  , 'vss'    )
+                     , (IoPin.SOUTH, None, 'di_3'       , 'DI(3)'  , 'DI(3)'  )
+                     , (IoPin.SOUTH, None, 'di_4'       , 'DI(4)'  , 'DI(4)'  )
+                     , (IoPin.SOUTH, None, 'di_5'       , 'DI(5)'  , 'DI(5)'  )
 
-                     , (IoPin.EAST , None, 'a_2'        , 'A(2)'   , 'A(2)'   )
-                     , (IoPin.EAST , None, 'a_3'        , 'A(3)'   , 'A(3)'   )
-                     , (IoPin.EAST , None, 'a_4'        , 'A(4)'   , 'A(4)'   )
-                     , (IoPin.EAST , None, 'a_5'        , 'A(5)'   , 'A(5)'   )
-                     , (IoPin.EAST , None, 'a_6'        , 'A(6)'   , 'A(6)'   )
-                     , (IoPin.EAST , None, 'allpower_2' , 'iovdd'  , 'vdd'    )
-                     , (IoPin.EAST , None, 'allground_2', 'iovss'  , 'vss'    )
-                     , (IoPin.EAST , None, 'a_7'        , 'A(7)'   , 'A(7)'   )
-                     , (IoPin.EAST , None, 'a_8'        , 'A(8)'   , 'A(8)'   )
-                     , (IoPin.EAST , None, 'a_9'        , 'A(9)'   , 'A(9)'   )
-                     , (IoPin.EAST , None, 'a_10'       , 'A(10)'  , 'A(10)'  )
-                     , (IoPin.EAST , None, 'a_11'       , 'A(11)'  , 'A(11)'  )
-                     , (IoPin.EAST , None, 'a_12'       , 'A(12)'  , 'A(12)'  )
-                     , (IoPin.EAST , None, 'a_13'       , 'A(13)'  , 'A(13)'  )
+                     , (IoPin.EAST , None, 'do_6'       , 'DO(6)'  , 'DO(6)'  )
+                     , (IoPin.EAST , None, 'do_7'       , 'DO(7)'  , 'DO(7)'  )
+                     , (IoPin.EAST , None, 'lh_0'       , 'lh(0)'  , 'lh(0)'  )
+                     , (IoPin.EAST , None, 'lh_1'       , 'lh(1)'  , 'lh(1)'  )
+                     , (IoPin.EAST , None, 'we'         , 'WE'     , 'WE'     )
+                     , (IoPin.EAST , None, 'di_6'       , 'DI(6)'  , 'DI(6)'  )
+                     , (IoPin.EAST , None, 'di_7'       , 'DI(7)'  , 'DI(7)'  )
+                     , (IoPin.EAST , None, 'irq'        , 'IRQ'    , 'IRQ'    )
 
-                     , (IoPin.NORTH, None, 'irq'        , 'IRQ'    , 'IRQ'    )
                      , (IoPin.NORTH, None, 'nmi'        , 'NMI'    , 'NMI'    )
-                     , (IoPin.NORTH, None, 'rdy'        , 'RDY'    , 'RDY'    )
+                     , (IoPin.NORTH, None, 'allpower_1' , 'iovdd'  , 'vdd'    )
                      , (IoPin.NORTH, None, 'clk'        , 'clk'    , 'clk'    )
-                     , (IoPin.NORTH, None, 'allpower_3' , 'iovdd'  , 'vdd'    )
-                     , (IoPin.NORTH, None, 'allground_3', 'iovss'  , 'vss'    )
+                     , (IoPin.NORTH, None, 'allground_1', 'iovss'  , 'vss'    )
                      , (IoPin.NORTH, None, 'reset'      , 'reset'  , 'reset'  )
-                     , (IoPin.NORTH, None, 'we'         , 'WE'     , 'WE'     )
-                     , (IoPin.NORTH, None, 'a_14'       , 'a(14)'  , 'A(14)'  )
-                     , (IoPin.NORTH, None, 'a_15'       , 'a(15)'  , 'A(15)'  )
+                     , (IoPin.NORTH, None, 'rdy'        , 'RDY'    , 'RDY'    )
                      ]
         ioPinsSpec = [ (IoPin.WEST |IoPin.A_BEGIN, 'DI({})'  ,    vpitchedSliceHeight, vpitchedSliceHeight,  8)
                      , (IoPin.WEST |IoPin.A_BEGIN, 'DO({})'  , 14*vpitchedSliceHeight, vpitchedSliceHeight,  8)
@@ -133,7 +115,7 @@ def scriptMain ( **kw ):
                     #, (IoPin.NORTH|IoPin.A_BEGIN, 'reset'   , 15*hpitchedSliceHeight,      0 ,  1)
                      ]
        #ioPinsSpec = []
-        designConf = ChipConf( cell, ioPins=ioPinsSpec, ioPads=ioPadsSpec ) 
+        designConf = ChipConf( cell, ioPins=[], ioPads=ioPadsSpec ) 
         designConf.cfg.tramontana.mergeSupplies    = True
         designConf.cfg.etesian.bloat               = 'disabled'
        #designConf.cfg.etesian.bloat               = 'nsxlib'
@@ -145,7 +127,7 @@ def scriptMain ( **kw ):
         designConf.cfg.anabatic.globalIterations   = 10
         designConf.cfg.katana.hTracksReservedLocal = 15
         designConf.cfg.katana.vTracksReservedLocal = 15
-        designConf.cfg.katana.hTracksReservedMin   = 6
+        designConf.cfg.katana.hTracksReservedMin   = 7
         designConf.cfg.katana.vTracksReservedMin   = 6
         designConf.cfg.katana.trackFill            = 0
         designConf.cfg.katana.runRealignStage      = True
@@ -157,10 +139,11 @@ def scriptMain ( **kw ):
         designConf.bColumns            = 2
         designConf.bRows               = 2
         designConf.chipName            = 'chip'
-        designConf.chipConf.ioPadGauge = 'LEF.IO_Site'
+        designConf.chipConf.ioPadGauge = 'IOPadLib'
         designConf.coreToChipClass     = CoreToChip
-        designConf.coreSize            = (  252*sliceStep,  35*sliceHeight )
-        designConf.chipSize            = ( u(14*85 + 2*262.0), u(16*85 + 2*262.0) )
+        designConf.coreSize            = (  280*sliceStep,  38*sliceHeight )
+       #designConf.chipSize            = ( u(1414.0), u(1414.0) )   # 2mm^2.
+        designConf.chipSize            = ( u( 8*85 + 2*270.0), u( 8*85 + 2*270.0) )
         if buildChip:
             designConf.useHTree( 'clk_from_pad', Spares.HEAVY_LEAF_LOAD )
             designConf.useHTree( 'reset_from_pad' )
@@ -168,6 +151,22 @@ def scriptMain ( **kw ):
             chipBuilder.doChipNetlist()
             chipBuilder.doChipFloorplan()
             rvalue = chipBuilder.doPnR()
+            CRL.Gds.load( chipBuilder.conf.chip.getLibrary()
+                        , 'chip_r_seal.gds'
+                        , CRL.Gds.Layer_0_IsBoundary )
+            with overlay.UpdateSession():
+                chipCell = chipBuilder.conf.chip
+                sealCell = chipBuilder.conf.chip.getLibrary().getCell( 'sealring_top' )
+                chipAb = chipCell.getAbutmentBox()
+                sealAb = sealCell.getAbutmentBox()
+                sealX  = (chipAb.getWidth () - sealAb.getWidth ()) // 2
+                sealY  = (chipAb.getHeight() - sealAb.getHeight()) // 2
+                Instance.create( chipCell
+                               , 'sealring'
+                               , sealCell
+                               , Transformation( sealX, sealY, Transformation.Orientation.ID )
+                               , Instance.PlacementStatus.FIXED
+                               )
             chipBuilder.save()
         else:
             designConf.useHTree( 'clk', Spares.HEAVY_LEAF_LOAD )

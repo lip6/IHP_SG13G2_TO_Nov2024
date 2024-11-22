@@ -1,0 +1,31 @@
+
+-- =======================================================================
+-- Coriolis Structural VHDL Driver
+-- Generated on Nov 22, 2024, 02:57
+-- 
+-- To be interoperable with Alliance, it uses it's special VHDL subset.
+-- ("man vhdl" under Alliance for more informations)
+-- =======================================================================
+
+entity sealring_top is
+  port ( 
+       );
+end sealring_top;
+
+architecture structural of sealring_top is
+
+  component sealring
+    port ( 
+         );
+  end component;
+
+
+
+begin
+
+  sref_1 : sealring
+  port map ( 
+           );
+
+end structural;
+

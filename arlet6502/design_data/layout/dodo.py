@@ -20,7 +20,6 @@ from pdks.c4m_ihpsg13g2.designflow.filler   import Filler
 from pdks.c4m_ihpsg13g2.designflow.sealring import SealRing
 from doDesign                               import scriptMain
 
-fillerScript = pdks.c4m_ihpsg13g2.pdkIHPTop / 'libs.tech' / 'klayout' / 'tech' / 'scripts' / 'filler.py'
 
 PnR.textMode = True
 pnrSuffix    = '_cts_r'
@@ -29,6 +28,7 @@ topName      = 'arlet6502'
 ruleYosys = Yosys   .mkRule( 'yosys', 'Arlet6502.v' )
 ruleB2V   = Blif2Vst.mkRule( 'b2v'  , 'arlet6502.vst', [ruleYosys], flags=0 )
 # Rule for chip generation.
+ruleSeal  = SealRing.mkRule( 'sealring', targets=[ 'chip_r_seal.gds' ] , size=[1414.0, 1414.0] )
 rulePnR   = PnR     .mkRule( 'gds'  , [ 'chip_r.gds'
                                       , 'chip_r.vst'
                                       , 'chip_r.spi'
@@ -40,7 +40,7 @@ rulePnR   = PnR     .mkRule( 'gds'  , [ 'chip_r.gds'
                                       , 'corona.spi'
                                       , 'Arlet6502_cts.spi'
                                       , 'arlet6502_cts.vst' ]
-                                      , [ruleB2V]
+                                      , [ruleB2V, ruleSeal]
                                     , scriptMain
                                     , topName=topName )
 # Rule for block generation.
@@ -51,13 +51,10 @@ rulePnR   = PnR     .mkRule( 'gds'  , [ 'chip_r.gds'
 #                                    , scriptMain
 #                                    , topName=topName )
 ruleFiller = Filler.mkRule( 'filler', depends=[ rulePnR.file_target(0) ]
-                                    , targets=[ 'filled.gds' ]
+                                    , targets=[ '../gds/FMD_QNC_Arlet6502.gds' ]
                                     , flags  =Filler.NoActiv
                                     )
-ruleSeal   = SealRing.mkRule( 'sealring', targets=[ 'chip_r_seal.gds' ]
-                                        , size   =[ 1714.0, 1884.0 ]
-                                        )
-ruleFMD = Copy.mkRule( 'fmd', '../gds/FMD_QNC_Arlet6502.gds', [rulePnR] )
+#ruleFMD = Copy.mkRule( 'fmd', '../gds/FMD_QNC_Arlet6502.gds', [rulePnR] )
 shellEnv = ShellEnv()
 shellEnv[ 'SOURCE_FILE' ] = rulePnR.file_target(0).as_posix()
 shellEnv[ 'REPORT_FILE' ] = rulePnR.file_target(0).with_suffix('.kdrc-report.txt').as_posix()

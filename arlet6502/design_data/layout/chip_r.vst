@@ -1,7 +1,7 @@
 
 -- =======================================================================
 -- Coriolis Structural VHDL Driver
--- Generated on Nov 18, 2024, 23:02
+-- Generated on Nov 22, 2024, 02:57
 -- 
 -- To be interoperable with Alliance, it uses it's special VHDL subset.
 -- ("man vhdl" under Alliance for more informations)
@@ -15,8 +15,8 @@ entity chip_r is
        ; reset : in bit
        ; di    : in bit_vector(7 downto 0)
        ; we    : out bit
+       ; lh    : out bit_vector(1 downto 0)
        ; do    : out bit_vector(7 downto 0)
-       ; a     : out bit_vector(15 downto 0)
        ; iovdd : linkage bit
        ; iovss : linkage bit
        ; vdd   : linkage bit
@@ -50,14 +50,6 @@ architecture structural of chip_r is
          );
   end component;
 
-  component sg13g2_filler200_full
-    port ( iovdd : inout bit
-         ; iovss : inout bit
-         ; vdd   : inout bit
-         ; vss   : inout bit
-         );
-  end component;
-
   component sg13g2_iopadout16ma_full
     port ( c2p   : in bit
          ; pad   : inout bit
@@ -78,39 +70,7 @@ architecture structural of chip_r is
          );
   end component;
 
-  component sg13g2_filler2000_full
-    port ( iovdd : inout bit
-         ; iovss : inout bit
-         ; vdd   : inout bit
-         ; vss   : inout bit
-         );
-  end component;
-
-  component sg13g2_filler400_full
-    port ( iovdd : inout bit
-         ; iovss : inout bit
-         ; vdd   : inout bit
-         ; vss   : inout bit
-         );
-  end component;
-
   component sg13g2_corner_full
-    port ( iovdd : inout bit
-         ; iovss : inout bit
-         ; vdd   : inout bit
-         ; vss   : inout bit
-         );
-  end component;
-
-  component sg13g2_filler4000_full
-    port ( iovdd : inout bit
-         ; iovss : inout bit
-         ; vdd   : inout bit
-         ; vss   : inout bit
-         );
-  end component;
-
-  component sg13g2_filler1000_full
     port ( iovdd : inout bit
          ; iovss : inout bit
          ; vdd   : inout bit
@@ -134,10 +94,15 @@ architecture structural of chip_r is
          ; reset_from_pad : in bit
          ; di_from_pad    : in bit_vector(7 downto 0)
          ; we_to_pad      : out bit
+         ; lh_to_pad      : out bit_vector(1 downto 0)
          ; do_to_pad      : out bit_vector(7 downto 0)
-         ; a_to_pad       : out bit_vector(15 downto 0)
          ; vdd            : linkage bit
          ; vss            : linkage bit
+         );
+  end component;
+
+  component sealring_top
+    port ( 
          );
   end component;
 
@@ -147,12 +112,44 @@ architecture structural of chip_r is
   signal internal_rdy_from_pad   :  bit;
   signal internal_reset_from_pad :  bit;
   signal internal_we_to_pad      :  bit;
+  signal internal_lh_to_pad      :  bit_vector(1 downto 0);
   signal internal_di_from_pad    :  bit_vector(7 downto 0);
   signal internal_do_to_pad      :  bit_vector(7 downto 0);
-  signal internal_a_to_pad       :  bit_vector(15 downto 0);
 
 
 begin
+
+  padcorner_se : sg13g2_corner_full
+  port map ( iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  padcorner_sw : sg13g2_corner_full
+  port map ( iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  clk : sg13g2_iopadin_full
+  port map ( p2c   => internal_clk_from_pad
+           , pad   => clk
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  nmi : sg13g2_iopadin_full
+  port map ( p2c   => internal_nmi_from_pad
+           , pad   => nmi
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
 
   di_7 : sg13g2_iopadin_full
   port map ( p2c   => internal_di_from_pad(7)
@@ -172,18 +169,9 @@ begin
            , vss   => vss
            );
 
-  di_5 : sg13g2_iopadin_full
-  port map ( p2c   => internal_di_from_pad(5)
-           , pad   => di(5)
-           , iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  di_4 : sg13g2_iopadin_full
-  port map ( p2c   => internal_di_from_pad(4)
-           , pad   => di(4)
+  di_1 : sg13g2_iopadin_full
+  port map ( p2c   => internal_di_from_pad(1)
+           , pad   => di(1)
            , iovdd => iovdd
            , iovss => iovss
            , vdd   => vdd
@@ -199,13 +187,32 @@ begin
            , vss   => vss
            );
 
-  di_1 : sg13g2_iopadin_full
-  port map ( p2c   => internal_di_from_pad(1)
-           , pad   => di(1)
-           , iovdd => iovdd
+  p_iovss_1 : sg13g2_iopadiovss_full
+  port map ( iovdd => iovdd
            , iovss => iovss
            , vdd   => vdd
            , vss   => vss
+           );
+
+  p_iovss_0 : sg13g2_iopadiovss_full
+  port map ( iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  corona : corona_cts_r
+  port map ( clk_from_pad   => internal_clk_from_pad
+           , irq_from_pad   => internal_irq_from_pad
+           , nmi_from_pad   => internal_nmi_from_pad
+           , rdy_from_pad   => internal_rdy_from_pad
+           , reset_from_pad => internal_reset_from_pad
+           , di_from_pad    => internal_di_from_pad(7 downto 0)
+           , we_to_pad      => internal_we_to_pad
+           , lh_to_pad      => internal_lh_to_pad(1 downto 0)
+           , do_to_pad      => internal_do_to_pad(7 downto 0)
+           , vdd            => vdd
+           , vss            => vss
            );
 
   di_2 : sg13g2_iopadin_full
@@ -226,381 +233,27 @@ begin
            , vss   => vss
            );
 
-  clk : sg13g2_iopadin_full
-  port map ( p2c   => internal_clk_from_pad
-           , pad   => clk
+  di_4 : sg13g2_iopadin_full
+  port map ( p2c   => internal_di_from_pad(4)
+           , pad   => di(4)
            , iovdd => iovdd
            , iovss => iovss
            , vdd   => vdd
            , vss   => vss
            );
 
-  pad_spacer_10 : sg13g2_filler400_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_11 : sg13g2_filler200_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_12 : sg13g2_filler2000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_13 : sg13g2_filler400_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_14 : sg13g2_filler200_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_15 : sg13g2_filler2000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_16 : sg13g2_filler400_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_17 : sg13g2_filler200_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_18 : sg13g2_filler2000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_19 : sg13g2_filler400_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_26 : sg13g2_filler200_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_25 : sg13g2_filler400_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_24 : sg13g2_filler2000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_23 : sg13g2_filler200_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_22 : sg13g2_filler400_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_20 : sg13g2_filler200_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_21 : sg13g2_filler2000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_29 : sg13g2_filler200_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_28 : sg13g2_filler400_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_27 : sg13g2_filler2000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  p_vdd_2 : sg13g2_iopadvdd_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  p_vdd_1 : sg13g2_iopadvdd_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  p_vdd_0 : sg13g2_iopadvdd_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  p_vdd_3 : sg13g2_iopadvdd_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_33 : sg13g2_filler2000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_32 : sg13g2_filler200_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_31 : sg13g2_filler400_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_30 : sg13g2_filler2000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  p_iovss_1 : sg13g2_iopadiovss_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  p_iovss_0 : sg13g2_iopadiovss_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  p_iovss_2 : sg13g2_iopadiovss_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  p_iovss_3 : sg13g2_iopadiovss_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_0 : sg13g2_filler2000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_1 : sg13g2_filler400_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_2 : sg13g2_filler200_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_3 : sg13g2_filler2000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_4 : sg13g2_filler400_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_5 : sg13g2_filler200_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_6 : sg13g2_filler2000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_7 : sg13g2_filler400_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_8 : sg13g2_filler200_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_9 : sg13g2_filler2000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_39 : sg13g2_filler4000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_38 : sg13g2_filler400_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_37 : sg13g2_filler400_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_36 : sg13g2_filler2000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_35 : sg13g2_filler200_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_34 : sg13g2_filler400_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  a_10 : sg13g2_iopadout16ma_full
-  port map ( c2p   => internal_a_to_pad(10)
-           , pad   => a(10)
+  di_5 : sg13g2_iopadin_full
+  port map ( p2c   => internal_di_from_pad(5)
+           , pad   => di(5)
            , iovdd => iovdd
            , iovss => iovss
            , vdd   => vdd
            , vss   => vss
            );
 
-  a_11 : sg13g2_iopadout16ma_full
-  port map ( c2p   => internal_a_to_pad(11)
-           , pad   => a(11)
-           , iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  a_12 : sg13g2_iopadout16ma_full
-  port map ( c2p   => internal_a_to_pad(12)
-           , pad   => a(12)
-           , iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  a_13 : sg13g2_iopadout16ma_full
-  port map ( c2p   => internal_a_to_pad(13)
-           , pad   => a(13)
+  reset : sg13g2_iopadin_full
+  port map ( p2c   => internal_reset_from_pad
+           , pad   => reset
            , iovdd => iovdd
            , iovss => iovss
            , vdd   => vdd
@@ -625,196 +278,6 @@ begin
            , vss   => vss
            );
 
-  a_14 : sg13g2_iopadout16ma_full
-  port map ( c2p   => internal_a_to_pad(14)
-           , pad   => a(14)
-           , iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  a_15 : sg13g2_iopadout16ma_full
-  port map ( c2p   => internal_a_to_pad(15)
-           , pad   => a(15)
-           , iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_40 : sg13g2_filler1000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  rdy : sg13g2_iopadin_full
-  port map ( p2c   => internal_rdy_from_pad
-           , pad   => rdy
-           , iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_49 : sg13g2_filler1000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_48 : sg13g2_filler4000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_47 : sg13g2_filler200_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_46 : sg13g2_filler1000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_45 : sg13g2_filler4000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_44 : sg13g2_filler200_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_43 : sg13g2_filler1000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_42 : sg13g2_filler4000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_41 : sg13g2_filler200_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  nmi : sg13g2_iopadin_full
-  port map ( p2c   => internal_nmi_from_pad
-           , pad   => nmi
-           , iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  padcorner_sw : sg13g2_corner_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  padcorner_se : sg13g2_corner_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_59 : sg13g2_filler400_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_58 : sg13g2_filler1000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_57 : sg13g2_filler4000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_56 : sg13g2_filler200_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_55 : sg13g2_filler1000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_54 : sg13g2_filler4000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_53 : sg13g2_filler200_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_52 : sg13g2_filler1000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_51 : sg13g2_filler4000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_50 : sg13g2_filler200_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
   do_7 : sg13g2_iopadout16ma_full
   port map ( c2p   => internal_do_to_pad(7)
            , pad   => do(7)
@@ -827,60 +290,6 @@ begin
   do_6 : sg13g2_iopadout16ma_full
   port map ( c2p   => internal_do_to_pad(6)
            , pad   => do(6)
-           , iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  do_5 : sg13g2_iopadout16ma_full
-  port map ( c2p   => internal_do_to_pad(5)
-           , pad   => do(5)
-           , iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  do_4 : sg13g2_iopadout16ma_full
-  port map ( c2p   => internal_do_to_pad(4)
-           , pad   => do(4)
-           , iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  do_3 : sg13g2_iopadout16ma_full
-  port map ( c2p   => internal_do_to_pad(3)
-           , pad   => do(3)
-           , iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  do_2 : sg13g2_iopadout16ma_full
-  port map ( c2p   => internal_do_to_pad(2)
-           , pad   => do(2)
-           , iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  do_1 : sg13g2_iopadout16ma_full
-  port map ( c2p   => internal_do_to_pad(1)
-           , pad   => do(1)
-           , iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  do_0 : sg13g2_iopadout16ma_full
-  port map ( c2p   => internal_do_to_pad(0)
-           , pad   => do(0)
            , iovdd => iovdd
            , iovss => iovss
            , vdd   => vdd
@@ -901,261 +310,82 @@ begin
            , vss   => vss
            );
 
-  p_vss_2 : sg13g2_iopadvss_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  p_vss_3 : sg13g2_iopadvss_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_69 : sg13g2_filler4000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_68 : sg13g2_filler200_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_67 : sg13g2_filler1000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_66 : sg13g2_filler4000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_65 : sg13g2_filler200_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_64 : sg13g2_filler1000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_63 : sg13g2_filler4000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_62 : sg13g2_filler200_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_61 : sg13g2_filler1000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_60 : sg13g2_filler4000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  a_7 : sg13g2_iopadout16ma_full
-  port map ( c2p   => internal_a_to_pad(7)
-           , pad   => a(7)
+  do_0 : sg13g2_iopadout16ma_full
+  port map ( c2p   => internal_do_to_pad(0)
+           , pad   => do(0)
            , iovdd => iovdd
            , iovss => iovss
            , vdd   => vdd
            , vss   => vss
            );
 
-  a_6 : sg13g2_iopadout16ma_full
-  port map ( c2p   => internal_a_to_pad(6)
-           , pad   => a(6)
+  do_1 : sg13g2_iopadout16ma_full
+  port map ( c2p   => internal_do_to_pad(1)
+           , pad   => do(1)
            , iovdd => iovdd
            , iovss => iovss
            , vdd   => vdd
            , vss   => vss
            );
 
-  a_5 : sg13g2_iopadout16ma_full
-  port map ( c2p   => internal_a_to_pad(5)
-           , pad   => a(5)
+  do_2 : sg13g2_iopadout16ma_full
+  port map ( c2p   => internal_do_to_pad(2)
+           , pad   => do(2)
            , iovdd => iovdd
            , iovss => iovss
            , vdd   => vdd
            , vss   => vss
            );
 
-  a_4 : sg13g2_iopadout16ma_full
-  port map ( c2p   => internal_a_to_pad(4)
-           , pad   => a(4)
+  do_3 : sg13g2_iopadout16ma_full
+  port map ( c2p   => internal_do_to_pad(3)
+           , pad   => do(3)
            , iovdd => iovdd
            , iovss => iovss
            , vdd   => vdd
            , vss   => vss
            );
 
-  a_3 : sg13g2_iopadout16ma_full
-  port map ( c2p   => internal_a_to_pad(3)
-           , pad   => a(3)
+  do_4 : sg13g2_iopadout16ma_full
+  port map ( c2p   => internal_do_to_pad(4)
+           , pad   => do(4)
            , iovdd => iovdd
            , iovss => iovss
            , vdd   => vdd
            , vss   => vss
            );
 
-  a_2 : sg13g2_iopadout16ma_full
-  port map ( c2p   => internal_a_to_pad(2)
-           , pad   => a(2)
+  do_5 : sg13g2_iopadout16ma_full
+  port map ( c2p   => internal_do_to_pad(5)
+           , pad   => do(5)
            , iovdd => iovdd
            , iovss => iovss
            , vdd   => vdd
            , vss   => vss
            );
 
-  a_1 : sg13g2_iopadout16ma_full
-  port map ( c2p   => internal_a_to_pad(1)
-           , pad   => a(1)
-           , iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
+  sealring : sealring_top
+  port map ( 
            );
 
-  a_0 : sg13g2_iopadout16ma_full
-  port map ( c2p   => internal_a_to_pad(0)
-           , pad   => a(0)
-           , iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  corona : corona_cts_r
-  port map ( clk_from_pad   => internal_clk_from_pad
-           , irq_from_pad   => internal_irq_from_pad
-           , nmi_from_pad   => internal_nmi_from_pad
-           , rdy_from_pad   => internal_rdy_from_pad
-           , reset_from_pad => internal_reset_from_pad
-           , di_from_pad    => internal_di_from_pad(7 downto 0)
-           , we_to_pad      => internal_we_to_pad
-           , do_to_pad      => internal_do_to_pad(7 downto 0)
-           , a_to_pad       => internal_a_to_pad(15 downto 0)
-           , vdd            => vdd
-           , vss            => vss
-           );
-
-  a_8 : sg13g2_iopadout16ma_full
-  port map ( c2p   => internal_a_to_pad(8)
-           , pad   => a(8)
-           , iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  a_9 : sg13g2_iopadout16ma_full
-  port map ( c2p   => internal_a_to_pad(9)
-           , pad   => a(9)
-           , iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_77 : sg13g2_filler400_full
+  padcorner_ne : sg13g2_corner_full
   port map ( iovdd => iovdd
            , iovss => iovss
            , vdd   => vdd
            , vss   => vss
            );
 
-  pad_spacer_76 : sg13g2_filler1000_full
+  padcorner_nw : sg13g2_corner_full
   port map ( iovdd => iovdd
            , iovss => iovss
            , vdd   => vdd
            , vss   => vss
            );
 
-  pad_spacer_75 : sg13g2_filler4000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_74 : sg13g2_filler200_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_73 : sg13g2_filler1000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_72 : sg13g2_filler4000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_71 : sg13g2_filler200_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  pad_spacer_70 : sg13g2_filler1000_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  reset : sg13g2_iopadin_full
-  port map ( p2c   => internal_reset_from_pad
-           , pad   => reset
+  rdy : sg13g2_iopadin_full
+  port map ( p2c   => internal_rdy_from_pad
+           , pad   => rdy
            , iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  p_iovdd_2 : sg13g2_iopadiovdd_full
-  port map ( iovdd => iovdd
            , iovss => iovss
            , vdd   => vdd
            , vss   => vss
@@ -1175,21 +405,32 @@ begin
            , vss   => vss
            );
 
-  p_iovdd_3 : sg13g2_iopadiovdd_full
+  lh_1 : sg13g2_iopadout16ma_full
+  port map ( c2p   => internal_lh_to_pad(1)
+           , pad   => lh(1)
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  lh_0 : sg13g2_iopadout16ma_full
+  port map ( c2p   => internal_lh_to_pad(0)
+           , pad   => lh(0)
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  p_vdd_1 : sg13g2_iopadvdd_full
   port map ( iovdd => iovdd
            , iovss => iovss
            , vdd   => vdd
            , vss   => vss
            );
 
-  padcorner_nw : sg13g2_corner_full
-  port map ( iovdd => iovdd
-           , iovss => iovss
-           , vdd   => vdd
-           , vss   => vss
-           );
-
-  padcorner_ne : sg13g2_corner_full
+  p_vdd_0 : sg13g2_iopadvdd_full
   port map ( iovdd => iovdd
            , iovss => iovss
            , vdd   => vdd
