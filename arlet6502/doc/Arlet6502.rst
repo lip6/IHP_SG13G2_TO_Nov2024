@@ -70,7 +70,13 @@ Position of the I/O pads in the corona (could also be read in ``doDesign.py``) :
     +-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
       	    | DI(2) |  VDD  | IOVDD |  VSS  | IOVSS | DI(3) | DI(4) | DI(5) |
     +       +-------+-------+-------+-------+-------+-------+-------+-------+       +
-	   
+
+
+Validation
+==========
+
+The behaviour of the chip has  been validated using ``cpu_test.v`` using Icarus
+Verilog simulator and analyzing the vcd trace with gtkwave.
 
 
 .. [1] https://en.wikipedia.org/wiki/MOS_Technology_6502

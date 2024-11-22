@@ -151,22 +151,22 @@ def scriptMain ( **kw ):
             chipBuilder.doChipNetlist()
             chipBuilder.doChipFloorplan()
             rvalue = chipBuilder.doPnR()
-            CRL.Gds.load( chipBuilder.conf.chip.getLibrary()
-                        , 'chip_r_seal.gds'
-                        , CRL.Gds.Layer_0_IsBoundary )
-            with overlay.UpdateSession():
-                chipCell = chipBuilder.conf.chip
-                sealCell = chipBuilder.conf.chip.getLibrary().getCell( 'sealring_top' )
-                chipAb = chipCell.getAbutmentBox()
-                sealAb = sealCell.getAbutmentBox()
-                sealX  = (chipAb.getWidth () - sealAb.getWidth ()) // 2
-                sealY  = (chipAb.getHeight() - sealAb.getHeight()) // 2
-                Instance.create( chipCell
-                               , 'sealring'
-                               , sealCell
-                               , Transformation( sealX, sealY, Transformation.Orientation.ID )
-                               , Instance.PlacementStatus.FIXED
-                               )
+            #CRL.Gds.load( chipBuilder.conf.chip.getLibrary()
+            #            , 'chip_r_seal.gds'
+            #            , CRL.Gds.Layer_0_IsBoundary )
+            #with overlay.UpdateSession():
+            #    chipCell = chipBuilder.conf.chip
+            #    sealCell = chipBuilder.conf.chip.getLibrary().getCell( 'sealring_top' )
+            #    chipAb = chipCell.getAbutmentBox()
+            #    sealAb = sealCell.getAbutmentBox()
+            #    sealX  = (chipAb.getWidth () - sealAb.getWidth ()) // 2
+            #    sealY  = (chipAb.getHeight() - sealAb.getHeight()) // 2
+            #    Instance.create( chipCell
+            #                   , 'sealring'
+            #                   , sealCell
+            #                   , Transformation( sealX, sealY, Transformation.Orientation.ID )
+            #                   , Instance.PlacementStatus.FIXED
+            #                   )
             chipBuilder.save()
         else:
             designConf.useHTree( 'clk', Spares.HEAVY_LEAF_LOAD )

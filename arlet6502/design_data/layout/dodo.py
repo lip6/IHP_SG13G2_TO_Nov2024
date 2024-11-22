@@ -50,10 +50,10 @@ rulePnR   = PnR     .mkRule( 'gds'  , [ 'chip_r.gds'
 #                                      , [ruleB2V]
 #                                    , scriptMain
 #                                    , topName=topName )
-ruleFiller = Filler.mkRule( 'filler', depends=[ rulePnR.file_target(0) ]
-                                    , targets=[ '../gds/FMD_QNC_Arlet6502.gds' ]
-                                    , flags  =Filler.NoActiv
-                                    )
+#ruleFiller = Filler.mkRule( 'filler', depends=[ rulePnR.file_target(0) ]
+#                                    , targets=[ '../gds/FMD_QNC_Arlet6502.gds' ]
+#                                    , flags  =Filler.NoActiv
+#                                    )
 #ruleFMD = Copy.mkRule( 'fmd', '../gds/FMD_QNC_Arlet6502.gds', [rulePnR] )
 shellEnv = ShellEnv()
 shellEnv[ 'SOURCE_FILE' ] = rulePnR.file_target(0).as_posix()
