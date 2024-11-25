@@ -1,0 +1,11 @@
+read_verilog -sv Arlet6502.v
+hierarchy -check -top Arlet6502
+synth            -top Arlet6502
+flatten        
+hierarchy -top Arlet6502
+memory
+dfflibmap -liberty /dsk/l1/jpc/coriolis-2.x/release/install/lib64/python3.9/site-packages/pdks/c4m_ihpsg13g2/libs.ref/StdCellLib/liberty/StdCellLib_nom.lib
+abc       -liberty /dsk/l1/jpc/coriolis-2.x/release/install/lib64/python3.9/site-packages/pdks/c4m_ihpsg13g2/libs.ref/StdCellLib/liberty/StdCellLib_nom.lib
+stat
+clean
+write_blif Arlet6502.blif

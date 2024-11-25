@@ -1,0 +1,396 @@
+
+-- =======================================================================
+-- Coriolis Structural VHDL Driver
+-- Generated on Nov 22, 2024, 15:52
+-- 
+-- To be interoperable with Alliance, it uses it's special VHDL subset.
+-- ("man vhdl" under Alliance for more informations)
+-- =======================================================================
+
+entity chip is
+  port ( clk   : in bit
+       ; irq   : in bit
+       ; nmi   : in bit
+       ; rdy   : in bit
+       ; reset : in bit
+       ; di    : in bit_vector(7 downto 0)
+       ; we    : out bit
+       ; lh    : out bit_vector(1 downto 0)
+       ; do    : out bit_vector(7 downto 0)
+       ; iovdd : linkage bit
+       ; iovss : linkage bit
+       ; vdd   : linkage bit
+       ; vss   : linkage bit
+       );
+end chip;
+
+architecture structural of chip is
+
+  component sg13g2_iopadvss_full
+    port ( iovdd : inout bit
+         ; iovss : inout bit
+         ; vdd   : inout bit
+         ; vss   : inout bit
+         );
+  end component;
+
+  component sg13g2_iopadiovdd_full
+    port ( iovdd : inout bit
+         ; iovss : inout bit
+         ; vdd   : inout bit
+         ; vss   : inout bit
+         );
+  end component;
+
+  component sg13g2_iopadvdd_full
+    port ( iovdd : inout bit
+         ; iovss : inout bit
+         ; vdd   : inout bit
+         ; vss   : inout bit
+         );
+  end component;
+
+  component sg13g2_iopadout16ma_full
+    port ( c2p   : in bit
+         ; pad   : inout bit
+         ; iovdd : inout bit
+         ; iovss : inout bit
+         ; vdd   : inout bit
+         ; vss   : inout bit
+         );
+  end component;
+
+  component sg13g2_iopadin_full
+    port ( p2c   : out bit
+         ; pad   : inout bit
+         ; iovdd : inout bit
+         ; iovss : inout bit
+         ; vdd   : inout bit
+         ; vss   : inout bit
+         );
+  end component;
+
+  component sg13g2_iopadiovss_full
+    port ( iovdd : inout bit
+         ; iovss : inout bit
+         ; vdd   : inout bit
+         ; vss   : inout bit
+         );
+  end component;
+
+  component corona
+    port ( clk_from_pad   : in bit
+         ; irq_from_pad   : in bit
+         ; nmi_from_pad   : in bit
+         ; rdy_from_pad   : in bit
+         ; reset_from_pad : in bit
+         ; di_from_pad    : in bit_vector(7 downto 0)
+         ; we_to_pad      : out bit
+         ; lh_to_pad      : out bit_vector(1 downto 0)
+         ; do_to_pad      : out bit_vector(7 downto 0)
+         ; vdd            : linkage bit
+         ; vss            : linkage bit
+         );
+  end component;
+
+  signal internal_clk_from_pad   :  bit;
+  signal internal_irq_from_pad   :  bit;
+  signal internal_nmi_from_pad   :  bit;
+  signal internal_rdy_from_pad   :  bit;
+  signal internal_reset_from_pad :  bit;
+  signal internal_we_to_pad      :  bit;
+  signal internal_lh_to_pad      :  bit_vector(1 downto 0);
+  signal internal_di_from_pad    :  bit_vector(7 downto 0);
+  signal internal_do_to_pad      :  bit_vector(7 downto 0);
+
+
+begin
+
+  clk : sg13g2_iopadin_full
+  port map ( p2c   => internal_clk_from_pad
+           , pad   => clk
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  nmi : sg13g2_iopadin_full
+  port map ( p2c   => internal_nmi_from_pad
+           , pad   => nmi
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  di_7 : sg13g2_iopadin_full
+  port map ( p2c   => internal_di_from_pad(7)
+           , pad   => di(7)
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  di_6 : sg13g2_iopadin_full
+  port map ( p2c   => internal_di_from_pad(6)
+           , pad   => di(6)
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  di_1 : sg13g2_iopadin_full
+  port map ( p2c   => internal_di_from_pad(1)
+           , pad   => di(1)
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  di_0 : sg13g2_iopadin_full
+  port map ( p2c   => internal_di_from_pad(0)
+           , pad   => di(0)
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  p_iovss_1 : sg13g2_iopadiovss_full
+  port map ( iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  p_iovss_0 : sg13g2_iopadiovss_full
+  port map ( iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  corona : corona
+  port map ( clk_from_pad   => internal_clk_from_pad
+           , irq_from_pad   => internal_irq_from_pad
+           , nmi_from_pad   => internal_nmi_from_pad
+           , rdy_from_pad   => internal_rdy_from_pad
+           , reset_from_pad => internal_reset_from_pad
+           , di_from_pad    => internal_di_from_pad(7 downto 0)
+           , we_to_pad      => internal_we_to_pad
+           , lh_to_pad      => internal_lh_to_pad(1 downto 0)
+           , do_to_pad      => internal_do_to_pad(7 downto 0)
+           , vdd            => vdd
+           , vss            => vss
+           );
+
+  di_2 : sg13g2_iopadin_full
+  port map ( p2c   => internal_di_from_pad(2)
+           , pad   => di(2)
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  di_3 : sg13g2_iopadin_full
+  port map ( p2c   => internal_di_from_pad(3)
+           , pad   => di(3)
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  di_4 : sg13g2_iopadin_full
+  port map ( p2c   => internal_di_from_pad(4)
+           , pad   => di(4)
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  di_5 : sg13g2_iopadin_full
+  port map ( p2c   => internal_di_from_pad(5)
+           , pad   => di(5)
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  reset : sg13g2_iopadin_full
+  port map ( p2c   => internal_reset_from_pad
+           , pad   => reset
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  irq : sg13g2_iopadin_full
+  port map ( p2c   => internal_irq_from_pad
+           , pad   => irq
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  we : sg13g2_iopadout16ma_full
+  port map ( c2p   => internal_we_to_pad
+           , pad   => we
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  do_7 : sg13g2_iopadout16ma_full
+  port map ( c2p   => internal_do_to_pad(7)
+           , pad   => do(7)
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  do_6 : sg13g2_iopadout16ma_full
+  port map ( c2p   => internal_do_to_pad(6)
+           , pad   => do(6)
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  p_vss_1 : sg13g2_iopadvss_full
+  port map ( iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  p_vss_0 : sg13g2_iopadvss_full
+  port map ( iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  do_0 : sg13g2_iopadout16ma_full
+  port map ( c2p   => internal_do_to_pad(0)
+           , pad   => do(0)
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  do_1 : sg13g2_iopadout16ma_full
+  port map ( c2p   => internal_do_to_pad(1)
+           , pad   => do(1)
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  do_2 : sg13g2_iopadout16ma_full
+  port map ( c2p   => internal_do_to_pad(2)
+           , pad   => do(2)
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  do_3 : sg13g2_iopadout16ma_full
+  port map ( c2p   => internal_do_to_pad(3)
+           , pad   => do(3)
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  do_4 : sg13g2_iopadout16ma_full
+  port map ( c2p   => internal_do_to_pad(4)
+           , pad   => do(4)
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  do_5 : sg13g2_iopadout16ma_full
+  port map ( c2p   => internal_do_to_pad(5)
+           , pad   => do(5)
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  rdy : sg13g2_iopadin_full
+  port map ( p2c   => internal_rdy_from_pad
+           , pad   => rdy
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  p_iovdd_1 : sg13g2_iopadiovdd_full
+  port map ( iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  p_iovdd_0 : sg13g2_iopadiovdd_full
+  port map ( iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  lh_1 : sg13g2_iopadout16ma_full
+  port map ( c2p   => internal_lh_to_pad(1)
+           , pad   => lh(1)
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  lh_0 : sg13g2_iopadout16ma_full
+  port map ( c2p   => internal_lh_to_pad(0)
+           , pad   => lh(0)
+           , iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  p_vdd_1 : sg13g2_iopadvdd_full
+  port map ( iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+  p_vdd_0 : sg13g2_iopadvdd_full
+  port map ( iovdd => iovdd
+           , iovss => iovss
+           , vdd   => vdd
+           , vss   => vss
+           );
+
+end structural;
+

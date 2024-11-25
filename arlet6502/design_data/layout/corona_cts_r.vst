@@ -1,0 +1,671 @@
+
+-- =======================================================================
+-- Coriolis Structural VHDL Driver
+-- Generated on Nov 22, 2024, 15:53
+-- 
+-- To be interoperable with Alliance, it uses it's special VHDL subset.
+-- ("man vhdl" under Alliance for more informations)
+-- =======================================================================
+
+entity corona_cts_r is
+  port ( clk_from_pad   : in bit
+       ; irq_from_pad   : in bit
+       ; nmi_from_pad   : in bit
+       ; rdy_from_pad   : in bit
+       ; reset_from_pad : in bit
+       ; di_from_pad    : in bit_vector(7 downto 0)
+       ; we_to_pad      : out bit
+       ; lh_to_pad      : out bit_vector(1 downto 0)
+       ; do_to_pad      : out bit_vector(7 downto 0)
+       ; vdd            : linkage bit
+       ; vss            : linkage bit
+       );
+end corona_cts_r;
+
+architecture structural of corona_cts_r is
+
+  component tie
+    port ( vdd : in bit
+         ; vss : in bit
+         );
+  end component;
+
+  component diode_w1
+    port ( i   : in bit
+         ; vdd : in bit
+         ; vss : in bit
+         );
+  end component;
+
+  component decap_w0
+    port ( vdd : in bit
+         ; vss : in bit
+         );
+  end component;
+
+  component buf_x4
+    port ( i   : in bit
+         ; q   : out bit
+         ; vdd : in bit
+         ; vss : in bit
+         );
+  end component;
+
+  component arlet6502_cts
+    port ( clk                              : in bit
+         ; clk_from_pad_root_bl_0           : in bit
+         ; clk_from_pad_root_bl_1           : in bit
+         ; clk_from_pad_root_bl_2           : in bit
+         ; clk_from_pad_root_br_0           : in bit
+         ; clk_from_pad_root_br_1           : in bit
+         ; clk_from_pad_root_br_2           : in bit
+         ; clk_from_pad_root_tl_0           : in bit
+         ; clk_from_pad_root_tr_0           : in bit
+         ; clk_from_pad_root_tr_1           : in bit
+         ; clk_from_pad_root_tr_2           : in bit
+         ; irq                              : in bit
+         ; nmi                              : in bit
+         ; rdy                              : in bit
+         ; reset                            : in bit
+         ; reset_from_pad_root_br_0         : in bit
+         ; reset_from_pad_root_tl_0         : in bit
+         ; di                               : in bit_vector(7 downto 0)
+         ; core_abc_12216_new_n1399         : out bit
+         ; core_abc_12216_new_n1399_hfns_0  : out bit
+         ; core_abc_12216_new_n1399_hfns_1  : out bit
+         ; core_abc_12216_new_n1399_hfns_2  : out bit
+         ; core_abc_12216_new_n1404         : out bit
+         ; core_abc_12216_new_n1404_hfns_0  : out bit
+         ; core_abc_12216_new_n1404_hfns_1  : out bit
+         ; core_abc_12216_new_n1404_hfns_2  : out bit
+         ; core_abc_12216_new_n1411         : out bit
+         ; core_abc_12216_new_n1411_hfns_0  : out bit
+         ; core_abc_12216_new_n1411_hfns_1  : out bit
+         ; core_abc_12216_new_n1411_hfns_2  : out bit
+         ; core_abc_12216_new_n336          : out bit
+         ; core_abc_12216_new_n336_hfns_0   : out bit
+         ; core_abc_12216_new_n336_hfns_1   : out bit
+         ; core_abc_12216_new_n336_hfns_2   : out bit
+         ; core_abc_12216_new_n457          : out bit
+         ; core_abc_12216_new_n457_hfns_0   : out bit
+         ; core_abc_12216_new_n457_hfns_1   : out bit
+         ; core_abc_12216_new_n457_hfns_2   : out bit
+         ; core_abc_12216_new_n457_hfns_3   : out bit
+         ; core_abc_12216_new_n459          : out bit
+         ; core_abc_12216_new_n459_hfns_0   : out bit
+         ; core_abc_12216_new_n459_hfns_1   : out bit
+         ; core_abc_12216_new_n459_hfns_2   : out bit
+         ; core_abc_12216_new_n464          : out bit
+         ; core_abc_12216_new_n464_hfns_0   : out bit
+         ; core_abc_12216_new_n464_hfns_1   : out bit
+         ; core_abc_12216_new_n464_hfns_2   : out bit
+         ; core_abc_12216_new_n467          : out bit
+         ; core_abc_12216_new_n467_hfns_0   : out bit
+         ; core_abc_12216_new_n467_hfns_1   : out bit
+         ; core_abc_12216_new_n467_hfns_2   : out bit
+         ; core_abc_12216_new_n467_hfns_3   : out bit
+         ; core_abc_12216_new_n467_hfns_4   : out bit
+         ; core_abc_12216_new_n476          : out bit
+         ; core_abc_12216_new_n476_hfns_0   : out bit
+         ; core_abc_12216_new_n476_hfns_1   : out bit
+         ; core_abc_12216_new_n476_hfns_2   : out bit
+         ; core_abc_12216_new_n489          : out bit
+         ; core_abc_12216_new_n489_hfns_0   : out bit
+         ; core_abc_12216_new_n489_hfns_1   : out bit
+         ; core_abc_12216_new_n489_hfns_2   : out bit
+         ; core_abc_12216_new_n493          : out bit
+         ; core_abc_12216_new_n493_hfns_0   : out bit
+         ; core_abc_12216_new_n493_hfns_1   : out bit
+         ; core_abc_12216_new_n493_hfns_2   : out bit
+         ; core_abc_12216_new_n612          : out bit
+         ; core_abc_12216_new_n612_hfns_0   : out bit
+         ; core_abc_12216_new_n612_hfns_1   : out bit
+         ; core_abc_12216_new_n612_hfns_2   : out bit
+         ; core_abc_12216_new_n637          : out bit
+         ; core_abc_12216_new_n637_hfns_0   : out bit
+         ; core_abc_12216_new_n637_hfns_1   : out bit
+         ; core_abc_12216_new_n637_hfns_2   : out bit
+         ; core_abc_12216_new_n638          : out bit
+         ; core_abc_12216_new_n638_hfns_0   : out bit
+         ; core_abc_12216_new_n638_hfns_1   : out bit
+         ; core_abc_12216_new_n638_hfns_2   : out bit
+         ; core_abc_12216_new_n646          : out bit
+         ; core_abc_12216_new_n646_hfns_0   : out bit
+         ; core_abc_12216_new_n646_hfns_1   : out bit
+         ; core_abc_12216_new_n646_hfns_2   : out bit
+         ; core_abc_12216_new_n664          : out bit
+         ; core_abc_12216_new_n664_hfns_0   : out bit
+         ; core_abc_12216_new_n664_hfns_1   : out bit
+         ; core_abc_12216_new_n664_hfns_2   : out bit
+         ; core_abc_12216_new_n686          : out bit
+         ; core_abc_12216_new_n686_hfns_0   : out bit
+         ; core_abc_12216_new_n686_hfns_1   : out bit
+         ; core_abc_12216_new_n686_hfns_2   : out bit
+         ; core_abc_12216_new_n692          : out bit
+         ; core_abc_12216_new_n692_hfns_0   : out bit
+         ; core_abc_12216_new_n692_hfns_1   : out bit
+         ; core_abc_12216_new_n692_hfns_2   : out bit
+         ; core_abc_12216_new_n692_hfns_3   : out bit
+         ; core_abc_12216_new_n714          : out bit
+         ; core_abc_12216_new_n714_hfns_0   : out bit
+         ; core_abc_12216_new_n714_hfns_1   : out bit
+         ; core_abc_12216_new_n714_hfns_2   : out bit
+         ; core_abc_12216_new_n760          : out bit
+         ; core_abc_12216_new_n760_hfns_0   : out bit
+         ; core_abc_12216_new_n760_hfns_1   : out bit
+         ; core_abc_12216_new_n760_hfns_2   : out bit
+         ; core_mos6502_irhold_valid        : out bit
+         ; core_mos6502_irhold_valid_hfns_0 : out bit
+         ; core_mos6502_irhold_valid_hfns_1 : out bit
+         ; core_mos6502_irhold_valid_hfns_2 : out bit
+         ; core_mos6502_state_bit0_hfns_0   : out bit
+         ; core_mos6502_state_bit0_hfns_1   : out bit
+         ; core_mos6502_state_bit0_hfns_2   : out bit
+         ; we                               : out bit
+         ; core_mos6502_state_0             : out bit
+         -- Vector <core_mos6502_state> is holed, unvectorized.
+         ; lh                               : out bit_vector(1 downto 0)
+         ; do                               : out bit_vector(7 downto 0)
+         ; vdd                              : in bit
+         ; vss                              : in bit
+         );
+  end component;
+
+  signal blockagenet                      :  bit;
+  signal clk_from_pad_root_0              :  bit;
+  signal clk_from_pad_root_bl_0           :  bit;
+  signal clk_from_pad_root_bl_1           :  bit;
+  signal clk_from_pad_root_bl_2           :  bit;
+  signal clk_from_pad_root_br_0           :  bit;
+  signal clk_from_pad_root_br_1           :  bit;
+  signal clk_from_pad_root_br_2           :  bit;
+  signal clk_from_pad_root_tl_0           :  bit;
+  signal clk_from_pad_root_tl_1           :  bit;
+  signal clk_from_pad_root_tl_2           :  bit;
+  signal clk_from_pad_root_tr_0           :  bit;
+  signal clk_from_pad_root_tr_1           :  bit;
+  signal clk_from_pad_root_tr_2           :  bit;
+  signal core_abc_12216_new_n1399         :  bit;
+  signal core_abc_12216_new_n1399_hfns_0  :  bit;
+  signal core_abc_12216_new_n1399_hfns_1  :  bit;
+  signal core_abc_12216_new_n1399_hfns_2  :  bit;
+  signal core_abc_12216_new_n1404         :  bit;
+  signal core_abc_12216_new_n1404_hfns_0  :  bit;
+  signal core_abc_12216_new_n1404_hfns_1  :  bit;
+  signal core_abc_12216_new_n1404_hfns_2  :  bit;
+  signal core_abc_12216_new_n1411         :  bit;
+  signal core_abc_12216_new_n1411_hfns_0  :  bit;
+  signal core_abc_12216_new_n1411_hfns_1  :  bit;
+  signal core_abc_12216_new_n1411_hfns_2  :  bit;
+  signal core_abc_12216_new_n336          :  bit;
+  signal core_abc_12216_new_n336_hfns_0   :  bit;
+  signal core_abc_12216_new_n336_hfns_1   :  bit;
+  signal core_abc_12216_new_n336_hfns_2   :  bit;
+  signal core_abc_12216_new_n457          :  bit;
+  signal core_abc_12216_new_n457_hfns_0   :  bit;
+  signal core_abc_12216_new_n457_hfns_1   :  bit;
+  signal core_abc_12216_new_n457_hfns_2   :  bit;
+  signal core_abc_12216_new_n457_hfns_3   :  bit;
+  signal core_abc_12216_new_n459          :  bit;
+  signal core_abc_12216_new_n459_hfns_0   :  bit;
+  signal core_abc_12216_new_n459_hfns_1   :  bit;
+  signal core_abc_12216_new_n459_hfns_2   :  bit;
+  signal core_abc_12216_new_n464          :  bit;
+  signal core_abc_12216_new_n464_hfns_0   :  bit;
+  signal core_abc_12216_new_n464_hfns_1   :  bit;
+  signal core_abc_12216_new_n464_hfns_2   :  bit;
+  signal core_abc_12216_new_n467          :  bit;
+  signal core_abc_12216_new_n467_hfns_0   :  bit;
+  signal core_abc_12216_new_n467_hfns_1   :  bit;
+  signal core_abc_12216_new_n467_hfns_2   :  bit;
+  signal core_abc_12216_new_n467_hfns_3   :  bit;
+  signal core_abc_12216_new_n467_hfns_4   :  bit;
+  signal core_abc_12216_new_n476          :  bit;
+  signal core_abc_12216_new_n476_hfns_0   :  bit;
+  signal core_abc_12216_new_n476_hfns_1   :  bit;
+  signal core_abc_12216_new_n476_hfns_2   :  bit;
+  signal core_abc_12216_new_n489          :  bit;
+  signal core_abc_12216_new_n489_hfns_0   :  bit;
+  signal core_abc_12216_new_n489_hfns_1   :  bit;
+  signal core_abc_12216_new_n489_hfns_2   :  bit;
+  signal core_abc_12216_new_n493          :  bit;
+  signal core_abc_12216_new_n493_hfns_0   :  bit;
+  signal core_abc_12216_new_n493_hfns_1   :  bit;
+  signal core_abc_12216_new_n493_hfns_2   :  bit;
+  signal core_abc_12216_new_n612          :  bit;
+  signal core_abc_12216_new_n612_hfns_0   :  bit;
+  signal core_abc_12216_new_n612_hfns_1   :  bit;
+  signal core_abc_12216_new_n612_hfns_2   :  bit;
+  signal core_abc_12216_new_n637          :  bit;
+  signal core_abc_12216_new_n637_hfns_0   :  bit;
+  signal core_abc_12216_new_n637_hfns_1   :  bit;
+  signal core_abc_12216_new_n637_hfns_2   :  bit;
+  signal core_abc_12216_new_n638          :  bit;
+  signal core_abc_12216_new_n638_hfns_0   :  bit;
+  signal core_abc_12216_new_n638_hfns_1   :  bit;
+  signal core_abc_12216_new_n638_hfns_2   :  bit;
+  signal core_abc_12216_new_n646          :  bit;
+  signal core_abc_12216_new_n646_hfns_0   :  bit;
+  signal core_abc_12216_new_n646_hfns_1   :  bit;
+  signal core_abc_12216_new_n646_hfns_2   :  bit;
+  signal core_abc_12216_new_n664          :  bit;
+  signal core_abc_12216_new_n664_hfns_0   :  bit;
+  signal core_abc_12216_new_n664_hfns_1   :  bit;
+  signal core_abc_12216_new_n664_hfns_2   :  bit;
+  signal core_abc_12216_new_n686          :  bit;
+  signal core_abc_12216_new_n686_hfns_0   :  bit;
+  signal core_abc_12216_new_n686_hfns_1   :  bit;
+  signal core_abc_12216_new_n686_hfns_2   :  bit;
+  signal core_abc_12216_new_n692          :  bit;
+  signal core_abc_12216_new_n692_hfns_0   :  bit;
+  signal core_abc_12216_new_n692_hfns_1   :  bit;
+  signal core_abc_12216_new_n692_hfns_2   :  bit;
+  signal core_abc_12216_new_n692_hfns_3   :  bit;
+  signal core_abc_12216_new_n714          :  bit;
+  signal core_abc_12216_new_n714_hfns_0   :  bit;
+  signal core_abc_12216_new_n714_hfns_1   :  bit;
+  signal core_abc_12216_new_n714_hfns_2   :  bit;
+  signal core_abc_12216_new_n760          :  bit;
+  signal core_abc_12216_new_n760_hfns_0   :  bit;
+  signal core_abc_12216_new_n760_hfns_1   :  bit;
+  signal core_abc_12216_new_n760_hfns_2   :  bit;
+  signal core_mos6502_irhold_valid        :  bit;
+  signal core_mos6502_irhold_valid_hfns_0 :  bit;
+  signal core_mos6502_irhold_valid_hfns_1 :  bit;
+  signal core_mos6502_irhold_valid_hfns_2 :  bit;
+  signal core_mos6502_state_bit0_hfns_0   :  bit;
+  signal core_mos6502_state_bit0_hfns_1   :  bit;
+  signal core_mos6502_state_bit0_hfns_2   :  bit;
+  signal reset_from_pad_root_0            :  bit;
+  signal reset_from_pad_root_bl_0         :  bit;
+  signal reset_from_pad_root_br_0         :  bit;
+  signal reset_from_pad_root_tl_0         :  bit;
+  signal reset_from_pad_root_tr_0         :  bit;
+  signal core_mos6502_state_0             :  bit;
+  -- Vector <core_mos6502_state> is holed, unvectorized.;
+
+
+begin
+
+  spare_feed_20 : decap_w0
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  spare_feed_25 : tie
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  spare_feed_24 : tie
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  spare_feed_23 : decap_w0
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  spare_feed_22 : tie
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  spare_feed_21 : tie
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  spare_feed_9 : tie
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  spare_feed_8 : tie
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  spare_feed_7 : tie
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  spare_feed_6 : tie
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  spare_feed_5 : tie
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  core : arlet6502_cts
+  port map ( clk                              => clk_from_pad
+           , clk_from_pad_root_bl_0           => clk_from_pad_root_bl_0
+           , clk_from_pad_root_bl_1           => clk_from_pad_root_bl_1
+           , clk_from_pad_root_bl_2           => clk_from_pad_root_bl_2
+           , clk_from_pad_root_br_0           => clk_from_pad_root_br_0
+           , clk_from_pad_root_br_1           => clk_from_pad_root_br_1
+           , clk_from_pad_root_br_2           => clk_from_pad_root_br_2
+           , clk_from_pad_root_tl_0           => clk_from_pad_root_tl_0
+           , clk_from_pad_root_tr_0           => clk_from_pad_root_tr_0
+           , clk_from_pad_root_tr_1           => clk_from_pad_root_tr_1
+           , clk_from_pad_root_tr_2           => clk_from_pad_root_tr_2
+           , irq                              => irq_from_pad
+           , nmi                              => nmi_from_pad
+           , rdy                              => rdy_from_pad
+           , reset                            => reset_from_pad
+           , reset_from_pad_root_br_0         => reset_from_pad_root_br_0
+           , reset_from_pad_root_tl_0         => reset_from_pad_root_tl_0
+           , di                               => di_from_pad(7 downto 0)
+           , core_abc_12216_new_n1399         => core_abc_12216_new_n1399
+           , core_abc_12216_new_n1399_hfns_0  => core_abc_12216_new_n1399_hfns_0
+           , core_abc_12216_new_n1399_hfns_1  => core_abc_12216_new_n1399_hfns_1
+           , core_abc_12216_new_n1399_hfns_2  => core_abc_12216_new_n1399_hfns_2
+           , core_abc_12216_new_n1404         => core_abc_12216_new_n1404
+           , core_abc_12216_new_n1404_hfns_0  => core_abc_12216_new_n1404_hfns_0
+           , core_abc_12216_new_n1404_hfns_1  => core_abc_12216_new_n1404_hfns_1
+           , core_abc_12216_new_n1404_hfns_2  => core_abc_12216_new_n1404_hfns_2
+           , core_abc_12216_new_n1411         => core_abc_12216_new_n1411
+           , core_abc_12216_new_n1411_hfns_0  => core_abc_12216_new_n1411_hfns_0
+           , core_abc_12216_new_n1411_hfns_1  => core_abc_12216_new_n1411_hfns_1
+           , core_abc_12216_new_n1411_hfns_2  => core_abc_12216_new_n1411_hfns_2
+           , core_abc_12216_new_n336          => core_abc_12216_new_n336
+           , core_abc_12216_new_n336_hfns_0   => core_abc_12216_new_n336_hfns_0
+           , core_abc_12216_new_n336_hfns_1   => core_abc_12216_new_n336_hfns_1
+           , core_abc_12216_new_n336_hfns_2   => core_abc_12216_new_n336_hfns_2
+           , core_abc_12216_new_n457          => core_abc_12216_new_n457
+           , core_abc_12216_new_n457_hfns_0   => core_abc_12216_new_n457_hfns_0
+           , core_abc_12216_new_n457_hfns_1   => core_abc_12216_new_n457_hfns_1
+           , core_abc_12216_new_n457_hfns_2   => core_abc_12216_new_n457_hfns_2
+           , core_abc_12216_new_n457_hfns_3   => core_abc_12216_new_n457_hfns_3
+           , core_abc_12216_new_n459          => core_abc_12216_new_n459
+           , core_abc_12216_new_n459_hfns_0   => core_abc_12216_new_n459_hfns_0
+           , core_abc_12216_new_n459_hfns_1   => core_abc_12216_new_n459_hfns_1
+           , core_abc_12216_new_n459_hfns_2   => core_abc_12216_new_n459_hfns_2
+           , core_abc_12216_new_n464          => core_abc_12216_new_n464
+           , core_abc_12216_new_n464_hfns_0   => core_abc_12216_new_n464_hfns_0
+           , core_abc_12216_new_n464_hfns_1   => core_abc_12216_new_n464_hfns_1
+           , core_abc_12216_new_n464_hfns_2   => core_abc_12216_new_n464_hfns_2
+           , core_abc_12216_new_n467          => core_abc_12216_new_n467
+           , core_abc_12216_new_n467_hfns_0   => core_abc_12216_new_n467_hfns_0
+           , core_abc_12216_new_n467_hfns_1   => core_abc_12216_new_n467_hfns_1
+           , core_abc_12216_new_n467_hfns_2   => core_abc_12216_new_n467_hfns_2
+           , core_abc_12216_new_n467_hfns_3   => core_abc_12216_new_n467_hfns_3
+           , core_abc_12216_new_n467_hfns_4   => core_abc_12216_new_n467_hfns_4
+           , core_abc_12216_new_n476          => core_abc_12216_new_n476
+           , core_abc_12216_new_n476_hfns_0   => core_abc_12216_new_n476_hfns_0
+           , core_abc_12216_new_n476_hfns_1   => core_abc_12216_new_n476_hfns_1
+           , core_abc_12216_new_n476_hfns_2   => core_abc_12216_new_n476_hfns_2
+           , core_abc_12216_new_n489          => core_abc_12216_new_n489
+           , core_abc_12216_new_n489_hfns_0   => core_abc_12216_new_n489_hfns_0
+           , core_abc_12216_new_n489_hfns_1   => core_abc_12216_new_n489_hfns_1
+           , core_abc_12216_new_n489_hfns_2   => core_abc_12216_new_n489_hfns_2
+           , core_abc_12216_new_n493          => core_abc_12216_new_n493
+           , core_abc_12216_new_n493_hfns_0   => core_abc_12216_new_n493_hfns_0
+           , core_abc_12216_new_n493_hfns_1   => core_abc_12216_new_n493_hfns_1
+           , core_abc_12216_new_n493_hfns_2   => core_abc_12216_new_n493_hfns_2
+           , core_abc_12216_new_n612          => core_abc_12216_new_n612
+           , core_abc_12216_new_n612_hfns_0   => core_abc_12216_new_n612_hfns_0
+           , core_abc_12216_new_n612_hfns_1   => core_abc_12216_new_n612_hfns_1
+           , core_abc_12216_new_n612_hfns_2   => core_abc_12216_new_n612_hfns_2
+           , core_abc_12216_new_n637          => core_abc_12216_new_n637
+           , core_abc_12216_new_n637_hfns_0   => core_abc_12216_new_n637_hfns_0
+           , core_abc_12216_new_n637_hfns_1   => core_abc_12216_new_n637_hfns_1
+           , core_abc_12216_new_n637_hfns_2   => core_abc_12216_new_n637_hfns_2
+           , core_abc_12216_new_n638          => core_abc_12216_new_n638
+           , core_abc_12216_new_n638_hfns_0   => core_abc_12216_new_n638_hfns_0
+           , core_abc_12216_new_n638_hfns_1   => core_abc_12216_new_n638_hfns_1
+           , core_abc_12216_new_n638_hfns_2   => core_abc_12216_new_n638_hfns_2
+           , core_abc_12216_new_n646          => core_abc_12216_new_n646
+           , core_abc_12216_new_n646_hfns_0   => core_abc_12216_new_n646_hfns_0
+           , core_abc_12216_new_n646_hfns_1   => core_abc_12216_new_n646_hfns_1
+           , core_abc_12216_new_n646_hfns_2   => core_abc_12216_new_n646_hfns_2
+           , core_abc_12216_new_n664          => core_abc_12216_new_n664
+           , core_abc_12216_new_n664_hfns_0   => core_abc_12216_new_n664_hfns_0
+           , core_abc_12216_new_n664_hfns_1   => core_abc_12216_new_n664_hfns_1
+           , core_abc_12216_new_n664_hfns_2   => core_abc_12216_new_n664_hfns_2
+           , core_abc_12216_new_n686          => core_abc_12216_new_n686
+           , core_abc_12216_new_n686_hfns_0   => core_abc_12216_new_n686_hfns_0
+           , core_abc_12216_new_n686_hfns_1   => core_abc_12216_new_n686_hfns_1
+           , core_abc_12216_new_n686_hfns_2   => core_abc_12216_new_n686_hfns_2
+           , core_abc_12216_new_n692          => core_abc_12216_new_n692
+           , core_abc_12216_new_n692_hfns_0   => core_abc_12216_new_n692_hfns_0
+           , core_abc_12216_new_n692_hfns_1   => core_abc_12216_new_n692_hfns_1
+           , core_abc_12216_new_n692_hfns_2   => core_abc_12216_new_n692_hfns_2
+           , core_abc_12216_new_n692_hfns_3   => core_abc_12216_new_n692_hfns_3
+           , core_abc_12216_new_n714          => core_abc_12216_new_n714
+           , core_abc_12216_new_n714_hfns_0   => core_abc_12216_new_n714_hfns_0
+           , core_abc_12216_new_n714_hfns_1   => core_abc_12216_new_n714_hfns_1
+           , core_abc_12216_new_n714_hfns_2   => core_abc_12216_new_n714_hfns_2
+           , core_abc_12216_new_n760          => core_abc_12216_new_n760
+           , core_abc_12216_new_n760_hfns_0   => core_abc_12216_new_n760_hfns_0
+           , core_abc_12216_new_n760_hfns_1   => core_abc_12216_new_n760_hfns_1
+           , core_abc_12216_new_n760_hfns_2   => core_abc_12216_new_n760_hfns_2
+           , core_mos6502_irhold_valid        => core_mos6502_irhold_valid
+           , core_mos6502_irhold_valid_hfns_0 => core_mos6502_irhold_valid_hfns_0
+           , core_mos6502_irhold_valid_hfns_1 => core_mos6502_irhold_valid_hfns_1
+           , core_mos6502_irhold_valid_hfns_2 => core_mos6502_irhold_valid_hfns_2
+           , core_mos6502_state_bit0_hfns_0   => core_mos6502_state_bit0_hfns_0
+           , core_mos6502_state_bit0_hfns_1   => core_mos6502_state_bit0_hfns_1
+           , core_mos6502_state_bit0_hfns_2   => core_mos6502_state_bit0_hfns_2
+           , we                               => we_to_pad
+           , core_mos6502_state_0             => core_mos6502_state_0
+           , lh                               => lh_to_pad(1 downto 0)
+           , do                               => do_to_pad(7 downto 0)
+           , vdd                              => vdd
+           , vss                              => vss
+           );
+
+  spare_feed_0 : tie
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  spare_feed_1 : tie
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  spare_feed_2 : tie
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  spare_feed_3 : tie
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  spare_feed_4 : tie
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  spare_buffer_10 : buf_x4
+  port map ( i   => clk_from_pad_root_0
+           , q   => clk_from_pad_root_br_2
+           , vdd => vdd
+           , vss => vss
+           );
+
+  spare_buffer_11 : buf_x4
+  port map ( i   => reset_from_pad_root_0
+           , q   => reset_from_pad_root_br_0
+           , vdd => vdd
+           , vss => vss
+           );
+
+  spare_buffer_12 : buf_x4
+  port map ( i   => clk_from_pad_root_0
+           , q   => clk_from_pad_root_tl_0
+           , vdd => vdd
+           , vss => vss
+           );
+
+  spare_buffer_13 : buf_x4
+  port map ( i   => clk_from_pad_root_0
+           , q   => clk_from_pad_root_tl_1
+           , vdd => vdd
+           , vss => vss
+           );
+
+  spare_buffer_14 : buf_x4
+  port map ( i   => clk_from_pad_root_0
+           , q   => clk_from_pad_root_tl_2
+           , vdd => vdd
+           , vss => vss
+           );
+
+  spare_buffer_15 : buf_x4
+  port map ( i   => reset_from_pad_root_0
+           , q   => reset_from_pad_root_tl_0
+           , vdd => vdd
+           , vss => vss
+           );
+
+  spare_buffer_16 : buf_x4
+  port map ( i   => clk_from_pad_root_0
+           , q   => clk_from_pad_root_tr_0
+           , vdd => vdd
+           , vss => vss
+           );
+
+  spare_buffer_17 : buf_x4
+  port map ( i   => clk_from_pad_root_0
+           , q   => clk_from_pad_root_tr_1
+           , vdd => vdd
+           , vss => vss
+           );
+
+  spare_buffer_18 : buf_x4
+  port map ( i   => clk_from_pad_root_0
+           , q   => clk_from_pad_root_tr_2
+           , vdd => vdd
+           , vss => vss
+           );
+
+  spare_buffer_19 : buf_x4
+  port map ( i   => reset_from_pad_root_0
+           , q   => reset_from_pad_root_tr_0
+           , vdd => vdd
+           , vss => vss
+           );
+
+  diode_25 : diode_w1
+  port map ( i   => reset_from_pad
+           , vdd => vdd
+           , vss => vss
+           );
+
+  spare_feed_10 : tie
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  spare_feed_11 : tie
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  spare_feed_12 : tie
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  spare_feed_13 : tie
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  spare_buffer_9 : buf_x4
+  port map ( i   => clk_from_pad_root_0
+           , q   => clk_from_pad_root_br_1
+           , vdd => vdd
+           , vss => vss
+           );
+
+  spare_buffer_8 : buf_x4
+  port map ( i   => clk_from_pad_root_0
+           , q   => clk_from_pad_root_br_0
+           , vdd => vdd
+           , vss => vss
+           );
+
+  spare_buffer_7 : buf_x4
+  port map ( i   => reset_from_pad_root_0
+           , q   => reset_from_pad_root_bl_0
+           , vdd => vdd
+           , vss => vss
+           );
+
+  spare_buffer_6 : buf_x4
+  port map ( i   => clk_from_pad_root_0
+           , q   => clk_from_pad_root_bl_2
+           , vdd => vdd
+           , vss => vss
+           );
+
+  spare_buffer_5 : buf_x4
+  port map ( i   => clk_from_pad_root_0
+           , q   => clk_from_pad_root_bl_1
+           , vdd => vdd
+           , vss => vss
+           );
+
+  spare_buffer_0 : buf_x4
+  port map ( i   => clk_from_pad
+           , q   => clk_from_pad_root_0
+           , vdd => vdd
+           , vss => vss
+           );
+
+  spare_buffer_3 : buf_x4
+  port map ( i   => reset_from_pad
+           , q   => reset_from_pad_root_0
+           , vdd => vdd
+           , vss => vss
+           );
+
+  spare_buffer_4 : buf_x4
+  port map ( i   => clk_from_pad_root_0
+           , q   => clk_from_pad_root_bl_0
+           , vdd => vdd
+           , vss => vss
+           );
+
+  spare_feed_14 : tie
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  spare_feed_15 : tie
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  spare_feed_16 : tie
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  spare_feed_17 : tie
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  spare_feed_18 : tie
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+  spare_feed_19 : tie
+  port map ( vdd => vdd
+           , vss => vss
+           );
+
+end structural;
+
