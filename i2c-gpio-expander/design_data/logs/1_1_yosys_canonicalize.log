@@ -1,0 +1,36 @@
+1. Executing Verilog-2005 frontend: /home/daniel/work/aesc/i2c-gpio-expander/modules/elements/zibal//build//I2cGpioExpander/SG13G2/zibal/SG13G2Top.v
+2. Executing Liberty frontend: ./objects/ihp-sg13g2/SG13G2Top/base/lib/sg13g2_stdcell_typ_1p20V_25C.lib
+3. Executing Liberty frontend: ./objects/ihp-sg13g2/SG13G2Top/base/lib/sg13g2_io_typ_1p2V_3p3V_25C.lib
+4. Executing Verilog-2005 frontend: /home/daniel/work/aesc/i2c-gpio-expander/tools/OpenROAD-flow-scripts/flow/platforms/ihp-sg13g2/cells_clkgate.v
+Using ABC speed script.
+Extracting clock period from SDC file: ./results/ihp-sg13g2/SG13G2Top/base/clock_period.txt
+Setting clock period to 20000
+5. Executing HIERARCHY pass (managing design hierarchy).
+6. Executing AST frontend in derive mode using pre-parsed AST for module `\SG13G2Top'.
+6.1. Analyzing design hierarchy..
+6.2. Executing AST frontend in derive mode using pre-parsed AST for module `\I2cGpioExpander'.
+6.3. Analyzing design hierarchy..
+6.4. Executing AST frontend in derive mode using pre-parsed AST for module `\InterruptCtrl'.
+6.5. Executing AST frontend in derive mode using pre-parsed AST for module `\GpioCtrl'.
+6.6. Executing AST frontend in derive mode using pre-parsed AST for module `\I2cDeviceCtrl'.
+6.7. Analyzing design hierarchy..
+6.8. Executing AST frontend in derive mode using pre-parsed AST for module `\BufferCC_2'.
+6.9. Executing AST frontend in derive mode using pre-parsed AST for module `\BufferCC_1'.
+6.10. Executing AST frontend in derive mode using pre-parsed AST for module `\BufferCC'.
+6.11. Analyzing design hierarchy..
+6.12. Analyzing design hierarchy..
+7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Warning: Ignoring module BufferCC_1 because it contains processes (run 'proc' command first).
+Warning: Ignoring module BufferCC_2 because it contains processes (run 'proc' command first).
+Warning: Ignoring module I2cDeviceCtrl because it contains processes (run 'proc' command first).
+Warning: Ignoring module GpioCtrl because it contains processes (run 'proc' command first).
+Warning: Ignoring module InterruptCtrl because it contains processes (run 'proc' command first).
+Warning: Ignoring module I2cGpioExpander because it contains processes (run 'proc' command first).
+Warning: Ignoring module SG13G2Top because it contains processes (run 'proc' command first).
+Warning: Ignoring module BufferCC because it contains processes (run 'proc' command first).
+8. Executing RTLIL backend.
+Warnings: 8 unique messages, 8 total
+End of script. Logfile hash: 08d36ace13, CPU: user 0.03s system 0.01s, MEM: 16.12 MB peak
+Yosys 0.43+11 (git sha1 49f547782, clang++ 14.0.0-1ubuntu1.1 -fPIC -Os)
+Time spent: 41% 3x read_liberty (0 sec), 33% 1x hierarchy (0 sec), ...
+Elapsed time: 0:00.08[h:]min:sec. CPU time: user 0.07 sys 0.01 (98%). Peak memory: 17280KB.

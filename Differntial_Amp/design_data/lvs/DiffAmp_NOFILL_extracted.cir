@@ -1,0 +1,31 @@
+* Extracted by KLayout with SG13G2 LVS runset on : 18/11/2024 17:04
+
+.SUBCKT DiffAmp_NOFILL vss ibias_20u vinp d_ena vout vinn vdd
+M$1 vss vss vss vss sg13_hv_nmos L=0.5u W=9.99u AS=3.3966p AD=3.3966p PS=32.22u
++ PD=32.22u
+M$3 vss \$13 ibias_20u vss sg13_hv_nmos L=1u W=3.075u AS=0.6765p AD=0.6765p
++ PS=5.89u PD=5.89u
+M$8 \$9 d_ena vss vss sg13_hv_nmos L=1u W=0.5u AS=0.17p AD=0.17p PS=1.68u
++ PD=1.68u
+M$10 vss \$9 \$13 vss sg13_hv_nmos L=1u W=0.5u AS=0.17p AD=0.17p PS=1.68u
++ PD=1.68u
+M$11 vss \$13 \$20 vss sg13_hv_nmos L=1u W=0.76u AS=0.2584p AD=0.2584p PS=2.2u
++ PD=2.2u
+M$13 \$13 \$9 ibias_20u vss sg13_hv_nmos L=1u W=0.5u AS=0.17p AD=0.17p PS=1.68u
++ PD=1.68u
+M$22 vss vss vss vss sg13_hv_nmos L=1u W=2u AS=0.68p AD=0.68p PS=6.72u PD=6.72u
+M$23 \$20 vinn vout vss sg13_hv_nmos L=1u W=2.12u AS=0.7208p AD=0.7208p
++ PS=6.96u PD=6.96u
+M$24 \$20 vinp \$27 vss sg13_hv_nmos L=1u W=2.12u AS=0.7208p AD=0.7208p
++ PS=6.96u PD=6.96u
+M$40 vdd vdd vdd vdd sg13_hv_pmos L=0.5u W=5.8u AS=1.972p AD=1.972p PS=14.32u
++ PD=14.32u
+M$42 vdd \$27 \$27 vdd sg13_hv_pmos L=1u W=1.45u AS=0.493p AD=0.493p PS=3.58u
++ PD=3.58u
+M$43 vdd \$27 vout vdd sg13_hv_pmos L=1u W=1.45u AS=0.493p AD=0.493p PS=3.58u
++ PD=3.58u
+M$44 \$27 d_ena vdd vdd sg13_hv_pmos L=1u W=1.5u AS=0.51p AD=0.51p PS=3.68u
++ PD=3.68u
+M$45 \$9 d_ena vdd vdd sg13_hv_pmos L=1u W=1.5u AS=0.51p AD=0.51p PS=3.68u
++ PD=3.68u
+.ENDS DiffAmp_NOFILL

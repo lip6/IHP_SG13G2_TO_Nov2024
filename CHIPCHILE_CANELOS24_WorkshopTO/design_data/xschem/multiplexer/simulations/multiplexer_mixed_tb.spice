@@ -1,0 +1,151 @@
+** sch_path: /workspaces/usm-vlsi-tools/shared_xserver/AnalogMux-Workshop/design_data/xschem/multiplexer/multiplexer_mixed_tb.sch
+**.subckt multiplexer_mixed_tb
+Vpow Vdd GND 1.2
+Vp Vdd net1 0
+.save i(vp)
+C1 V_out GND 100f m=1
+x1 net1 V_in8 en8_n en8_p V_in7 en7_n en7_p V_in6 en6_n en6_p V_in5 en5_n en5_p V_out V_in4 en4_n en4_p V_in3 en3_n en3_p V_in2
++ en2_n en2_p V_in1 en1_n en1_p GND multiplexer
+Vin2 V_in1 GND dc 0 ac 1 sin(0.6, 20m, 200k, 0, 0)
+Vin3 V_in2 GND dc=0 ac=1 sin(0.6, 50m, 200k, 0, 0)
+Vin4 V_in3 GND dc=0 ac=1 sin(0.6, 100m, 200k, 0, 0)
+Vin5 V_in4 GND dc=0 ac=1 sin(0.6, 200m, 200k, 0, 0)
+Vin6 V_in5 GND dc=0 ac=1 sin(0.6, 300m, 200k, 0, 0)
+Vin7 V_in6 GND dc=0 ac=1 sin(0.6, 400m, 200k, 0, 0)
+Vin8 V_in7 GND dc=0 ac=1 sin(0.6, 500m, 200k, 0, 0)
+Vin1 V_in8 GND dc=0 ac=1 sin(0.6, 600m, 200k, 0, 0)
+adut [ net6 net5 net4 net3 net2 ] [ net8 net9 net10 net11 net12 net13 net14 net15 net16 net17 net18 net19 net20 net21 net22 net23
++ net24 ] null dut
+.model dut d_cosim simulation=./control.so
+A17 [ clk ] [ net6 ] adc1
+.model adc1 adc_bridge in_low=0.2 in_high=1.0
+A18 [ rst ] [ net5 ] adc1
+.model adc1 adc_bridge in_low=0.2 in_high=1.0
+A19 [ sck ] [ net4 ] adc1
+.model adc1 adc_bridge in_low=0.2 in_high=1.0
+A20 [ mosi ] [ net3 ] adc1
+.model adc1 adc_bridge in_low=0.2 in_high=1.0
+A21 [ ss ] [ net2 ] adc1
+.model adc1 adc_bridge in_low=0.2 in_high=1.0
+C2 net7 GND 10f m=1
+Vrst rst GND dc 0 ac 0 pulse(0 1.2 0 10n 10n 10u 800u)
+aclock1 GND clk clk
+.model clk d_osc cntl_array=[-1 1] freq_array=[ 100k 100k ]
+Vsck sck GND dc 0 ac 0 pulse(0 1.2 30u 10n 10n 10u 20u 8)
+Vmosi mosi GND dc 0 ac 0 pulse(0 1.2 42u 10n 10n 20u 80u 1)
+Vss ss GND dc 0 ac 0 pulse(1.2 0 20u 10n 10n 170u 200u 1)
+A1 [ net8 ] [ net7 ] dac1
+.model dac1 dac_bridge out_low=0.0 out_high=1.2
+A2 [ net9 ] [ en1_p ] dac1
+.model dac1 dac_bridge out_low=0.0 out_high=1.2
+A3 [ net10 ] [ en2_p ] dac1
+.model dac1 dac_bridge out_low=0.0 out_high=1.2
+A4 [ net11 ] [ en3_p ] dac1
+.model dac1 dac_bridge out_low=0.0 out_high=1.2
+A5 [ net12 ] [ en4_p ] dac1
+.model dac1 dac_bridge out_low=0.0 out_high=1.2
+A6 [ net13 ] [ en5_p ] dac1
+.model dac1 dac_bridge out_low=0.0 out_high=1.2
+A7 [ net14 ] [ en6_p ] dac1
+.model dac1 dac_bridge out_low=0.0 out_high=1.2
+A8 [ net15 ] [ en7_p ] dac1
+.model dac1 dac_bridge out_low=0.0 out_high=1.2
+A9 [ net16 ] [ en8_p ] dac1
+.model dac1 dac_bridge out_low=0.0 out_high=1.2
+A10 [ net17 ] [ en1_n ] dac1
+.model dac1 dac_bridge out_low=0.0 out_high=1.2
+A11 [ net18 ] [ en2_n ] dac1
+.model dac1 dac_bridge out_low=0.0 out_high=1.2
+A12 [ net19 ] [ en3_n ] dac1
+.model dac1 dac_bridge out_low=0.0 out_high=1.2
+A13 [ net20 ] [ en4_n ] dac1
+.model dac1 dac_bridge out_low=0.0 out_high=1.2
+A14 [ net21 ] [ en5_n ] dac1
+.model dac1 dac_bridge out_low=0.0 out_high=1.2
+A15 [ net22 ] [ en6_n ] dac1
+.model dac1 dac_bridge out_low=0.0 out_high=1.2
+A16 [ net23 ] [ en7_n ] dac1
+.model dac1 dac_bridge out_low=0.0 out_high=1.2
+A22 [ net24 ] [ en8_n ] dac1
+.model dac1 dac_bridge out_low=0.0 out_high=1.2
+R1 V_out GND 10k m=1
+**** begin user architecture code
+
+.lib cornerMOSlv.lib mos_tt
+.lib cornerRES.lib res_typ
+
+
+
+.param temp=27
+.control
+save all
+ic V(V_out)=0.6
+tran 100n 220u
+write tran_res_temp.raw
+.endc
+
+
+**** end user architecture code
+**.ends
+
+* expanding   symbol:  multiplexer.sym # of pins=27
+** sym_path: /workspaces/usm-vlsi-tools/shared_xserver/AnalogMux-Workshop/design_data/xschem/multiplexer/multiplexer.sym
+** sch_path: /workspaces/usm-vlsi-tools/shared_xserver/AnalogMux-Workshop/design_data/xschem/multiplexer/multiplexer.sch
+.subckt multiplexer Vdd IO8 en8_n en8_p IO7 en7_n en7_p IO6 en6_n en6_p IO5 en5_n en5_p Mout IO4 en4_n en4_p IO3 en3_n en3_p IO2
++ en2_n en2_p IO1 en1_n en1_p Vss
+*.iopin IO1
+*.iopin Vss
+*.ipin en1_n
+*.ipin en1_p
+*.iopin IO2
+*.iopin Mout
+*.ipin en2_n
+*.ipin en2_p
+*.iopin IO3
+*.ipin en3_n
+*.ipin en3_p
+*.iopin IO4
+*.ipin en4_n
+*.ipin en4_p
+*.iopin IO5
+*.ipin en5_n
+*.ipin en5_p
+*.iopin IO6
+*.ipin en6_n
+*.ipin en6_p
+*.iopin IO7
+*.ipin en7_n
+*.ipin en7_p
+*.iopin IO8
+*.iopin Vdd
+*.ipin en8_n
+*.ipin en8_p
+x1 Vdd en1_n IO1 Mout en1_p Vss transmission_gate
+x2 Vdd en2_n IO2 Mout en2_p Vss transmission_gate
+x3 Vdd en3_n IO3 Mout en3_p Vss transmission_gate
+x4 Vdd en4_n IO4 Mout en4_p Vss transmission_gate
+x5 Vdd en5_n IO5 Mout en5_p Vss transmission_gate
+x6 Vdd en6_n IO6 Mout en6_p Vss transmission_gate
+x7 Vdd en7_n IO7 Mout en7_p Vss transmission_gate
+x8 Vdd en8_n IO8 Mout en8_p Vss transmission_gate
+.ends
+
+
+* expanding   symbol:  transmission_gate.sym # of pins=6
+** sym_path: /workspaces/usm-vlsi-tools/shared_xserver/AnalogMux-Workshop/design_data/xschem/multiplexer/transmission_gate.sym
+** sch_path: /workspaces/usm-vlsi-tools/shared_xserver/AnalogMux-Workshop/design_data/xschem/multiplexer/transmission_gate.sch
+.subckt transmission_gate vdd en_n inout_1 inout_2 en_p vss
+*.iopin inout_1
+*.iopin inout_2
+*.ipin en_p
+*.iopin vdd
+*.iopin vss
+*.ipin en_n
+XM1 inout_2 en_p inout_1 net1 sg13_lv_nmos w=200.0u l=0.130u ng=20 m=1
+XM2 inout_1 en_n inout_2 net2 sg13_lv_pmos w=200.0u l=0.130u ng=20 m=1
+XR1 net2 vdd ntap1
+XR2 net1 vss ptap1
+.ends
+
+.GLOBAL GND
+.end

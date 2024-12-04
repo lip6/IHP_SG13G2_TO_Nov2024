@@ -1,0 +1,19 @@
+tran tb
+slew rate
+turn on time
+
+ac tb
+dc gain error
+
+ac tb2
+Dc gain
+Gain bandwidth'
+Unity gainbandwidth
+
+ac tb3
+cmrr
+
+???
+offset
+supply voltage range
+TC

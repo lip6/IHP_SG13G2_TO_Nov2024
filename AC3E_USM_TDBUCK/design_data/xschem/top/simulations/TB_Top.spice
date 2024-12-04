@@ -1,0 +1,352 @@
+** sch_path: /home/designer/shared/TO_Nov2024_AC3E_USM_TDBUCK/AC3E_USM_TDBUCK/design_data/xschem/top/TB_Top.sch
+**.subckt TB_Top
+x1 28 22 23 net6 GND 27 GND net7 21 net8 GND net9 19 18 GND net10 17 net11 16 GND net12 8 9 10 11 12 13 14 top
+Vdd net2 GND {Vdd}
+Vdd1 net1 GND {VH}
+V_Igd net1 23 0
+.save i(v_igd)
+V_Idig net2 19 0
+.save i(v_idig)
+Vg2 14 GND PULSE(0 {Vdd} 0 {TR} {TF} {T*D} {T} 0)
+Vg3 13 GND PULSE(0 {Vdd} {Td} {TR} {TF} {T*D} {T} 0)
+Vdd2 net3 GND {VH}
+V_Idcdc net3 28 0
+.save i(v_idcdc)
+L5 27 net5 {L} m=1
+C1 net4 GND {C} m=1
+V_Io net4 Vo 0
+.save i(v_io)
+R1 Vo GND {R} m=1
+V_IL net5 net4 0
+.save i(v_il)
+**** begin user architecture code
+
+
+.lib cornerMOShv.lib mos_tt
+.lib cornerMOSlv.lib mos_tt
+*.lib cornerMOShv.lib mos_ff
+*.lib cornerMOSlv.lib mos_ff
+*.lib cornerMOShv.lib mos_ss
+*.lib cornerMOSlv.lib mos_ss
+*.lib cornerMOShv.lib mos_sf
+*.lib cornerMOSlv.lib mos_sf
+*.lib cornerMOShv.lib mos_fs
+*.lib cornerMOSlv.lib mos_fs
+
+.include /opt/pdks/ihp-sg13g2/libs.ref/sg13g2_stdcell/spice/sg13g2_stdcell.spice
+.lib /opt/pdks/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib res_typ
+.lib /opt/pdks/ihp-sg13g2/libs.tech/ngspice/models/cornerCAP.lib cap_typ
+*.lib /opt/pdks/ihp-sg13g2/libs.tech/ngspice/models/diodes.lib
+
+
+
+*Parametros
+*Filtro
+*.param L = 1.37u
+*.param R = 0.9
+*.param C = 416n
+
+* Io=2A 10MHz
+*.param L = 137.5n
+*.param R = 0.6
+*.param C = 62.5n
+
+* Io=1A 10MHz
+*.param L = 275n
+*.param R = 1.2
+*.param C = 31.25n
+
+* Io=1A 8.4MHz
+.param L = 327n
+.param R = 1.2
+.param C = 37n
+
+
+
+
+
+.save all
++ @n.x1.x1.xm1.nsg13_hv_pmos[ids]
++ @n.x1.x1.xm2.nsg13_hv_nmos[ids]
+.param SimTime = 5u
+
+.option method=gear
+
+.control
+reset
+set color0 = white
+tran 100p 5u
+let Io = i(V_Io)
+let IL = i(V_IL)
+let Id_M1 = @n.x1.x1.xm1.nsg13_hv_pmos[ids]
+let Id_M2 = @n.x1.x1.xm2.nsg13_hv_nmos[ids]
+let I_DCDC = i(V_Idcdc)
+
+let Vsd_M1 = v(28) - v(27)
+let Vds_M2 = v(27)
+let Vg_M1 = v(22)
+let Vg_M2 = v(21)
+let Vs_M1 = v(18)
+let Vs_M2 = v(17)
+
+let Pin_DCDC = I_DCDC*v(28)
+let P_GD_VH = v(23)*i(V_Igd)
+let P_DB = v(19)*i(V_Idig)
+let P_M1 = Vsd_M1*Id_M1
+let P_M2 = -Vds_M2*Id_M2
+
+
+let Po = Io*v(Vo)
+
+let DataMeasBegin = SimTime-1u
+
+meas tran P_DB_mean AVG P_DB from=2.358u to=4.717u
+meas tran P_GD_mean AVG P_GD_VH from=2.358u to=4.717u
+meas tran Pin_DCDC_mean AVG Pin_DCDC from=2.358u to=4.717u
+
+let Pin_tot_mean = P_DB_mean + P_GD_mean + Pin_DCDC_mean
+print Pin_tot_mean
+
+meas tran Vo_mean AVG v(Vo) from=2.358u to=4.717u
+meas tran Io_mean AVG Io from=2.358u to=4.717u
+meas tran Po_mean AVG Po from=2.358u to=4.717u
+
+meas tran P_M1_mean AVG P_M1 from=2.358u to=4.717u
+meas tran P_M2_mean AVG P_M2 from=2.358u to=4.717u
+
+meas TRAN tdR TRIG Vg_M1 VAL=0.33 RISE=1 TARG Vg_M2 VAL=0.33 RISE=1
+meas TRAN tdF TRIG Vg_M1 VAL=2.97 FALL=1 TARG Vg_M2 VAL=2.97 FALL=1
+
+let eff = 100*Po_mean/Pin_tot_mean
+let eff_DCDC = 100*Po_mean/Pin_DCDC_mean
+let loss_M1 = 100*P_M1_mean/Pin_tot_mean
+let loss_M2 = 100*P_M2_mean/Pin_tot_mean
+let loss_GD = 100*P_GD_mean/Pin_tot_mean
+let loss_DB = 100*P_DB_mean/Pin_tot_mean
+let sumaPot = eff+loss_M1+loss_M2+loss_GD+loss_DB
+print eff eff_DCDC loss_M1 loss_M2 loss_GD loss_DB sumaPot
+
+plot Io IL
+plot Id_M1 Id_M2
+plot v(Vo)
+plot Po
+*plot P_M1 P_M2
+plot Vds_M2
+plot Vg_M1 Vg_M2
+plot Vs_M1 Vs_M2
+
+.endc
+
+
+
+.end
+
+
+
+
+.param Vdd = 1.2
+.param VH = 3.3
+
+*fs = 10MHz
+*.param T = 0.1u
+*fs = 8.48MHz a Vo=1.2V
+.param T = 0.11792u
+.param D = 0.615
+*fs = 8.44MHz a Vo=1.8V
+*.param T = 0.11848u
+*.param D = 0.4545
+
+.param TR = 1p
+.param TF = 1p
+.param Td = D*T
+
+.param temp = 27
+
+
+
+**** end user architecture code
+**.ends
+
+* expanding   symbol:  ../top/top.sym # of pins=28
+** sym_path: /home/designer/shared/TO_Nov2024_AC3E_USM_TDBUCK/AC3E_USM_TDBUCK/design_data/xschem/top/top.sym
+** sch_path: /home/designer/shared/TO_Nov2024_AC3E_USM_TDBUCK/AC3E_USM_TDBUCK/design_data/xschem/top/top.sch
+.subckt top 28 22 23 24 26 27 25 1 21 2 20 3 19 18 4 5 17 6 16 15 7 8 9 10 11 12 13 14
+*.iopin 1
+*.iopin 2
+*.iopin 3
+*.iopin 4
+*.iopin 5
+*.iopin 6
+*.iopin 7
+*.iopin 8
+*.iopin 9
+*.iopin 10
+*.iopin 11
+*.iopin 12
+*.iopin 13
+*.iopin 14
+*.iopin 15
+*.iopin 16
+*.iopin 17
+*.iopin 18
+*.iopin 19
+*.iopin 20
+*.iopin 21
+*.iopin 22
+*.iopin 23
+*.iopin 24
+*.iopin 25
+*.iopin 26
+*.iopin 27
+*.iopin 28
+x4 19 15 13 18 17 14 DB
+X2 17 22 19 23 25 20 GD_vto1p1
+X3 18 21 19 23 25 20 GD_vto1p1
+X1 22 21 28 26 27 DCDCBuck_vto1p1
+.ends
+
+
+* expanding   symbol:  ../Digital_Block/DB.sym # of pins=6
+** sym_path: /home/designer/shared/TO_Nov2024_AC3E_USM_TDBUCK/AC3E_USM_TDBUCK/design_data/xschem/Digital_Block/DB.sym
+** sch_path: /home/designer/shared/TO_Nov2024_AC3E_USM_TDBUCK/AC3E_USM_TDBUCK/design_data/xschem/Digital_Block/DB.sch
+.subckt DB VCC VSS VINS VCN VCP VINR
+*.iopin VCC
+*.iopin VSS
+*.iopin VINS
+*.iopin VINR
+*.iopin VCP
+*.iopin VCN
+x2 VCC VSS VINS 16 VINR PD_vto1p1
+x1 VCC VSS VCP 16 VCN NOL_vto1p1
+.ends
+
+
+* expanding   symbol:  ../GD/GD_vto1p1.sym # of pins=6
+** sym_path: /home/designer/shared/TO_Nov2024_AC3E_USM_TDBUCK/AC3E_USM_TDBUCK/design_data/xschem/GD/GD_vto1p1.sym
+** sch_path: /home/designer/shared/TO_Nov2024_AC3E_USM_TDBUCK/AC3E_USM_TDBUCK/design_data/xschem/GD/GD_vto1p1.sch
+.subckt GD_vto1p1 Vs Vg Vdd VH GND IGND
+*.iopin VH
+*.iopin Vdd
+*.ipin Vs
+*.opin Vg
+*.iopin GND
+*.iopin IGND
+XMD9 VgMD2 Vs Vdd Vdd sg13_lv_pmos w=1.12u l=0.13u ng=1 m=2
+XMD10 VgMD2 Vs GND GND sg13_lv_nmos w=1.12u l=0.13u ng=1 m=2
+XMD1 VgMD5 VgMD1 VH VH sg13_hv_pmos w=10u l=0.4u ng=1 m=1
+XMD3 VgMD1 VgMD5 VH VH sg13_hv_pmos w=10u l=0.4u ng=1 m=1
+XMD5 VgMD78 VgMD5 VH VH sg13_hv_pmos w=10u l=0.4u ng=1 m=30
+XMD7 Vg VgMD78 VH VH sg13_hv_pmos w=10u l=0.4u ng=1 m=250
+XMD2 VgMD5 VgMD2 IGND IGND sg13_hv_nmos w=10u l=0.45u ng=1 m=6
+XMD4 VgMD1 Vs IGND IGND sg13_hv_nmos w=10u l=0.45u ng=1 m=6
+XMD6 VgMD78 Vs IGND IGND sg13_hv_nmos w=10u l=0.45u ng=1 m=25
+XMD8 Vg VgMD78 IGND IGND sg13_hv_nmos w=10u l=0.45u ng=1 m=200
+**** begin user architecture code
+
+
+xMD1D  VgMD5   VH   VH   VH   sg13_hv_pmos L=0.4u W=10u M=1
+xMD3D  VgMD1   VH   VH   VH   sg13_hv_pmos L=0.4u W=10u M=1
+xMD5D  VgMD78  VH   VH   VH   sg13_hv_pmos L=0.4u W=10u M=2
+xMDPD  VH      VH   VH   VH   sg13_hv_pmos L=0.4u W=10u M=14
+xMD2D  VgMD5   IGND  IGND  IGND  sg13_hv_nmos L=0.45u W=10u M=2
+xMD4D  VgMD1   IGND  IGND  IGND  sg13_hv_nmos L=0.45u W=10u M=2
+xMD6D  VgMD78  IGND  IGND  IGND  sg13_hv_nmos L=0.45u W=10u M=1
+xMDND  IGND     IGND  IGND  IGND  sg13_hv_nmos L=0.45u W=10u M=58
+
+
+**** end user architecture code
+.ends
+
+
+* expanding   symbol:  ../DCDCBuck/DCDCBuck_vto1p1.sym # of pins=5
+** sym_path: /home/designer/shared/TO_Nov2024_AC3E_USM_TDBUCK/AC3E_USM_TDBUCK/design_data/xschem/DCDCBuck/DCDCBuck_vto1p1.sym
+** sch_path: /home/designer/shared/TO_Nov2024_AC3E_USM_TDBUCK/AC3E_USM_TDBUCK/design_data/xschem/DCDCBuck/DCDCBuck_vto1p1.sch
+.subckt DCDCBuck_vto1p1 VgM1 VgM2 Vin GND Vo
+*.iopin Vin
+*.ipin VgM1
+*.ipin VgM2
+*.iopin Vo
+*.iopin GND
+XM2 Vo VgM2 GND GND sg13_hv_nmos w=10u l=0.45u ng=1 m=4080
+XM1 Vo VgM1 Vin Vin sg13_hv_pmos w=10u l=0.4u ng=1 m=12096
+.ends
+
+
+* expanding   symbol:  ../PD/PD_vto1p1.sym # of pins=5
+** sym_path: /home/designer/shared/TO_Nov2024_AC3E_USM_TDBUCK/AC3E_USM_TDBUCK/design_data/xschem/PD/PD_vto1p1.sym
+** sch_path: /home/designer/shared/TO_Nov2024_AC3E_USM_TDBUCK/AC3E_USM_TDBUCK/design_data/xschem/PD/PD_vto1p1.sch
+.subckt PD_vto1p1 VCC VSS VINS V_PWM VINR
+*.iopin V_PWM
+*.iopin VCC
+*.iopin VSS
+*.iopin VINS
+*.iopin VINR
+x3 net2 V_PWM VCC VSS V_N sg13g2_nor2_1
+x1 V_N net1 VCC VSS V_PWM sg13g2_nor2_1
+x5 VCC VSS VFE1 VINR net2 SPG_vto1p1
+x2 VCC VSS VFE1 VINS net1 SPG_vto1p1
+C2 VFE1 VSS 100f m=1
+C1 VFE1 VSS 100f m=1
+.ends
+
+
+* expanding   symbol:  ../NOL/NOL_vto1p1.sym # of pins=5
+** sym_path: /home/designer/shared/TO_Nov2024_AC3E_USM_TDBUCK/AC3E_USM_TDBUCK/design_data/xschem/NOL/NOL_vto1p1.sym
+** sch_path: /home/designer/shared/TO_Nov2024_AC3E_USM_TDBUCK/AC3E_USM_TDBUCK/design_data/xschem/NOL/NOL_vto1p1.sch
+.subckt NOL_vto1p1 VCC VSS VCP CLK VCN
+*.iopin CLK
+*.iopin VCP
+*.iopin VCN
+*.iopin VCC
+*.iopin VSS
+x5 CLK VCC VSS A1 sg13g2_inv_1
+x3 A1 B1 VCC VSS C1 sg13g2_nor2_1
+x1 B2 CLK VCC VSS C2 sg13g2_nor2_1
+x2 B1 VCC VSS net1 sg13g2_inv_1
+x6 B2 VCC VSS net2 sg13g2_inv_2
+x7 net1 VCC VSS net3 sg13g2_inv_2
+x8 net2 VCC VSS VCN sg13g2_inv_4
+x9 net3 VCC VSS VCP sg13g2_inv_4
+x11 VCC VSS C1 B2 large_delay_vto1p1
+x4 VCC VSS C2 B1 large_delay_vto1p1
+.ends
+
+
+* expanding   symbol:  ../SPG/SPG_vto1p1.sym # of pins=5
+** sym_path: /home/designer/shared/TO_Nov2024_AC3E_USM_TDBUCK/AC3E_USM_TDBUCK/design_data/xschem/SPG/SPG_vto1p1.sym
+** sch_path: /home/designer/shared/TO_Nov2024_AC3E_USM_TDBUCK/AC3E_USM_TDBUCK/design_data/xschem/SPG/SPG_vto1p1.sch
+.subckt SPG_vto1p1 VCC VSS VFE VIN VRE
+*.iopin VIN
+*.iopin VFE
+*.iopin VRE
+*.iopin VCC
+*.iopin VSS
+x1 dly7 VCC VSS dly8 sg13g2_inv_1
+x2 predly VCC VSS net2 sg13g2_inv_1
+x3 net3 VCC VSS predly sg13g2_inv_1
+x4 dly8 VCC VSS net1 sg13g2_inv_1
+x5 VIN VCC VSS net3 sg13g2_inv_2
+x6 predly VCC VSS V_gatein sg13g2_inv_8
+x7 net2 dly8 VCC VSS VFE sg13g2_and2_2
+x8 net1 predly VCC VSS VRE sg13g2_and2_2
+x10 VCC VSS V_gatein dly7 large_delay_vto1p1
+.ends
+
+
+* expanding   symbol:  ../large_delay/large_delay_vto1p1.sym # of pins=4
+** sym_path: /home/designer/shared/TO_Nov2024_AC3E_USM_TDBUCK/AC3E_USM_TDBUCK/design_data/xschem/large_delay/large_delay_vto1p1.sym
+** sch_path: /home/designer/shared/TO_Nov2024_AC3E_USM_TDBUCK/AC3E_USM_TDBUCK/design_data/xschem/large_delay/large_delay_vto1p1.sch
+.subckt large_delay_vto1p1 VCC VSS VIN VOUT
+*.iopin VIN
+*.iopin VOUT
+*.iopin VCC
+*.iopin VSS
+x1[0] VIN VCC VSS n2 sg13g2_dlygate4sd3_1
+x1[1] n2 VCC VSS n3 sg13g2_dlygate4sd3_1
+x1[2] n3 VCC VSS n4 sg13g2_dlygate4sd3_1
+x1[3] n4 VCC VSS n5 sg13g2_dlygate4sd3_1
+x1[4] n5 VCC VSS VOUT sg13g2_dlygate4sd3_1
+.ends
+
+.GLOBAL GND
+.end
