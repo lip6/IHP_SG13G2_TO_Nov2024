@@ -8,16 +8,17 @@ pdks.c4m_ihpsg13g2.setup()
 DOIT_CONFIG = { 'verbosity' : 2 }
 
 from coriolis                               import CRL
-from coriolis.designflow.task               import ShellEnv
+from coriolis.designflow.task               import ShellEnv, Tasks
 from coriolis.designflow.pnr                import PnR
 from coriolis.designflow.yosys              import Yosys
 from coriolis.designflow.blif2vst           import Blif2Vst
 from coriolis.designflow.alias              import Alias
-from coriolis.designflow.klayout            import Klayout, DRC
+from coriolis.designflow.klayout            import Klayout
 from coriolis.designflow.copy               import Copy
 from coriolis.designflow.clean              import Clean
 from pdks.c4m_ihpsg13g2.designflow.filler   import Filler
 from pdks.c4m_ihpsg13g2.designflow.sealring import SealRing
+from pdks.c4m_ihpsg13g2.designflow.drc      import DRC
 from doDesign                               import scriptMain
 
 
@@ -55,12 +56,10 @@ rulePnR   = PnR     .mkRule( 'gds'  , [ 'chip_r.gds'
 #                                    , flags  =Filler.NoActiv
 #                                    )
 #ruleFMD = Copy.mkRule( 'fmd', '../gds/FMD_QNC_Arlet6502.gds', [rulePnR] )
-shellEnv = ShellEnv()
-shellEnv[ 'SOURCE_FILE' ] = rulePnR.file_target(0).as_posix()
-shellEnv[ 'REPORT_FILE' ] = rulePnR.file_target(0).with_suffix('.kdrc-report.txt').as_posix()
-shellEnv[ 'CELL_NAME'   ] = rulePnR.file_target(0).stem
-shellEnv.export()
-ruleDRC    = DRC   .mkRule( 'drc', rulePnR.file_target(0) )
+
+ruleDrcMin  = DRC.mkRule( 'drc_min', rulePnR.file_target(0), DRC.Minimal )
+ruleDrcMax  = DRC.mkRule( 'drc_max', rulePnR.file_target(0), DRC.Maximal )
+ruleDrcC4M  = DRC.mkRule( 'drc_c4m', rulePnR.file_target(0), DRC.C4M )
 
 # To run individual tools in stand-alone mode.
 ruleCgt     = PnR    .mkRule( 'cgt' )

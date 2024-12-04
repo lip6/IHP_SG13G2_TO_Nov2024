@@ -59,10 +59,10 @@ def scriptMain ( **kw ):
 
     rvalue = True
     try:
-        #setTraceLevel( 550 )
-        #for cell in af.getAllianceLibrary(1).getLibrary().getCells():
-        #    print( '"{}" {}'.format(cell.getName(),cell) )
-        #Breakpoint.setStopLevel( 100 )
+       #setTraceLevel( 550 )
+       #for cell in af.getAllianceLibrary(1).getLibrary().getCells():
+       #    print( '"{}" {}'.format(cell.getName(),cell) )
+       #Breakpoint.setStopLevel( 100 )
         buildChip = True
         cell, editor = plugins.kwParseMain( **kw )
         cell = af.getCell( 'Arlet6502', CRL.Catalog.State.Logical )
@@ -119,6 +119,7 @@ def scriptMain ( **kw ):
         designConf.cfg.tramontana.mergeSupplies    = True
         designConf.cfg.etesian.bloat               = 'disabled'
        #designConf.cfg.etesian.bloat               = 'nsxlib'
+        designConf.cfg.etesian.graphics            = 2
         designConf.cfg.etesian.densityVariation    = 0.05
         designConf.cfg.etesian.aspectRatio         = 1.0
        # etesian.spaceMargin is ignored if the coreSize is directly set.
@@ -141,7 +142,7 @@ def scriptMain ( **kw ):
         designConf.chipName            = 'chip'
         designConf.chipConf.ioPadGauge = 'IOPadLib'
         designConf.coreToChipClass     = CoreToChip
-        designConf.coreSize            = (  280*sliceStep,  38*sliceHeight )
+        designConf.coreSize            = (  300*sliceStep,  39*sliceHeight )
        #designConf.chipSize            = ( u(1414.0), u(1414.0) )   # 2mm^2.
         designConf.chipSize            = ( u( 8*85 + 2*270.0), u( 8*85 + 2*270.0) )
         if buildChip:
